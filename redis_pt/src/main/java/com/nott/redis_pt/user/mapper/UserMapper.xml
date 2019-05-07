@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nott.redis_pt.user.vo.UserVo">
+
+    <select id="findUserList" parameterType="com.nott.redis_pt.user.vo.UserVo" resultType="com.nott.redis_pt.user.vo.UserVo" statementType="PREPARED">
+        select id, name, age, delete
+        <include refid="findUserListForm" />
+        order by id desc
+        <if test="size != 0 and offset >= 0">
+            limit #{offect}, #{size};
+        </if>
+    </select>
+
+    <select id="findUserListCount" parameterType="com.nott.redis_pt.user.vo.UserVo" resultType="Integer" statementType="PREPARED">
+        select id, name, age, delete
+        <include refid="findUserListForm" />
+        order by id desc
+        <if test="size != 0 and offset >= 0">
+            limit #{offect}, #{size};
+        </if>
+    </select>
+
+    <sql id="findUserListForm">
+        from user u
+        <where>
+            u.delete == 1
+        </where>
+    </sql>
+
+</mapper>
