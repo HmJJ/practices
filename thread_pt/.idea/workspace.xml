@@ -2,24 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5bdee33f-dcf6-4ddc-843c-3888b35f733f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/MavenWrapperDownloader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/boot/InitApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/boot/ThreadPtApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/controller/pt_1_controller.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/service/pt_1_service.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/nott/thread_pt/ThreadPtApplicationTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/thread_pt.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/enums/Store.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/test/pt_1_test.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/threads/Consume.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/threads/Produce.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/controller/pt_1_controller.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/service/pt_1_service.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/thread_pt.iml" beforeDir="false" afterPath="$PROJECT_DIR$/thread_pt.iml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -35,10 +27,10 @@
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/controller/pt_1_controller.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/test/pt_1_test.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="15" selection-start-line="15" selection-end-line="15" />
+            <state relative-caret-position="152">
+              <caret line="26" column="18" selection-start-line="26" selection-start-column="16" selection-end-line="26" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -47,10 +39,61 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/service/pt_1_service.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/enums/Store.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="327">
-              <caret line="14" column="15" selection-start-line="14" selection-start-column="15" selection-end-line="14" selection-end-column="15" />
+            <state relative-caret-position="250">
+              <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#610#611#0" expanded="true" />
+                <element signature="e#639#640#0" expanded="true" />
+                <element signature="e#680#681#0" expanded="true" />
+                <element signature="e#716#717#0" expanded="true" />
+                <element signature="e#759#760#0" expanded="true" />
+                <element signature="e#791#792#0" expanded="true" />
+                <element signature="e#848#849#0" expanded="true" />
+                <element signature="e#890#891#0" expanded="true" />
+                <element signature="e#925#926#0" expanded="true" />
+                <element signature="e#959#960#0" expanded="true" />
+                <element signature="e#1010#1011#0" expanded="true" />
+                <element signature="e#1056#1057#0" expanded="true" />
+                <element signature="e#1091#1092#0" expanded="true" />
+                <element signature="e#1125#1126#0" expanded="true" />
+                <element signature="e#1176#1177#0" expanded="true" />
+                <element signature="e#1222#1223#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/threads/Consume.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="377">
+              <caret line="26" column="24" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="24" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#395#396#0" expanded="true" />
+                <element signature="e#415#416#0" expanded="true" />
+                <element signature="e#500#501#0" expanded="true" />
+                <element signature="e#531#532#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/threads/Produce.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="377">
+              <caret line="25" column="11" selection-start-line="25" selection-start-column="11" selection-end-line="25" selection-end-column="11" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#354#355#0" expanded="true" />
+                <element signature="e#387#388#0" expanded="true" />
+                <element signature="e#464#465#0" expanded="true" />
+                <element signature="e#484#485#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -61,6 +104,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -75,11 +119,41 @@
         <option value="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/boot/InitApplication.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/boot/ThreadPtApplication.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/controller/pt_1_controller.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/threads/produce.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/service/pt_1_service.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/threads/consume.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/threads/Consume.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/threads/Produce.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/enums/Store.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/test/pt_1_test.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <expand>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="thread_pt" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+        </path>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="thread_pt" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+          <item name="Lifecycle" type="58874e2:MavenProjectsStructure$LifecycleNode" />
+        </path>
+      </expand>
+      <select />
+    </treeState>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-9" />
     <option name="y" value="-9" />
     <option name="width" value="1938" />
@@ -154,6 +228,17 @@
               <item name="com" type="462c0819:PsiDirectoryNode" />
               <item name="nott" type="462c0819:PsiDirectoryNode" />
               <item name="thread_pt" type="462c0819:PsiDirectoryNode" />
+              <item name="boot" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="thread_pt" type="b2602c69:ProjectViewProjectNode" />
+              <item name="thread_pt" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="com" type="462c0819:PsiDirectoryNode" />
+              <item name="nott" type="462c0819:PsiDirectoryNode" />
+              <item name="thread_pt" type="462c0819:PsiDirectoryNode" />
               <item name="code" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -179,7 +264,7 @@
               <item name="thread_pt" type="462c0819:PsiDirectoryNode" />
               <item name="code" type="462c0819:PsiDirectoryNode" />
               <item name="pt_1" type="462c0819:PsiDirectoryNode" />
-              <item name="controller" type="462c0819:PsiDirectoryNode" />
+              <item name="enums" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="thread_pt" type="b2602c69:ProjectViewProjectNode" />
@@ -192,7 +277,14 @@
               <item name="thread_pt" type="462c0819:PsiDirectoryNode" />
               <item name="code" type="462c0819:PsiDirectoryNode" />
               <item name="pt_1" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="thread_pt" type="b2602c69:ProjectViewProjectNode" />
+              <item name="thread_pt" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -201,6 +293,10 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
@@ -225,7 +321,23 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.pt_1_test.test_pt_1">
+    <configuration name="pt_1_test.test_pt_1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="thread_pt" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.nott.thread_pt.code.pt_1.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.nott.thread_pt.code.pt_1.test" />
+      <option name="MAIN_CLASS_NAME" value="com.nott.thread_pt.code.pt_1.test.pt_1_test" />
+      <option name="METHOD_NAME" value="test_pt_1" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ThreadPtApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="thread_pt" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.nott.thread_pt.boot.ThreadPtApplication" />
@@ -233,6 +345,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.pt_1_test.test_pt_1" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -244,12 +361,44 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1557799080864</updated>
-      <workItem from="1557799083317" duration="1845000" />
+      <workItem from="1557799083317" duration="14398000" />
     </task>
     <servers />
   </component>
+  <component name="TestHistory">
+    <history-entry file="pt_1_test_test_pt_1 - 2019.05.14 at 10h 59m 32s.xml">
+      <configuration name="pt_1_test.test_pt_1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="pt_1_test_test_pt_1 - 2019.05.14 at 11h 01m 03s.xml">
+      <configuration name="pt_1_test.test_pt_1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="pt_1_test_test_pt_1 - 2019.05.14 at 11h 01m 18s.xml">
+      <configuration name="pt_1_test.test_pt_1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="pt_1_test_test_pt_1 - 2019.05.14 at 11h 23m 36s.xml">
+      <configuration name="pt_1_test.test_pt_1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="pt_1_test_test_pt_1 - 2019.05.14 at 11h 25m 08s.xml">
+      <configuration name="pt_1_test.test_pt_1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="pt_1_test_test_pt_1 - 2019.05.14 at 13h 46m 48s.xml">
+      <configuration name="pt_1_test.test_pt_1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="pt_1_test_test_pt_1 - 2019.05.14 at 13h 47m 17s.xml">
+      <configuration name="pt_1_test.test_pt_1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="pt_1_test_test_pt_1 - 2019.05.14 at 15h 27m 45s.xml">
+      <configuration name="pt_1_test.test_pt_1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="pt_1_test_test_pt_1 - 2019.05.14 at 15h 36m 40s.xml">
+      <configuration name="pt_1_test.test_pt_1" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="pt_1_test_test_pt_1 - 2019.05.14 at 15h 44m 43s.xml">
+      <configuration name="pt_1_test.test_pt_1" configurationId="JUnit" />
+    </history-entry>
+  </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1845000" />
+    <option name="totallyTimeSpent" value="14398000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -276,18 +425,18 @@
       <window_info anchor="bottom" id="Terminal" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" />
+      <window_info anchor="bottom" id="Messages" weight="0.329927" />
       <window_info anchor="bottom" id="Java Enterprise" />
       <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Version Control" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.68175185" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.47153285" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.7591241" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.329927" />
-      <window_info anchor="right" id="Maven" />
+      <window_info anchor="right" id="Maven" weight="0.3299595" />
       <window_info anchor="right" id="Palette" />
       <window_info anchor="right" id="Capture Analysis" />
       <window_info anchor="right" id="Database" />
@@ -303,16 +452,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="509">
-          <caret line="28" column="4" selection-start-line="28" selection-start-column="4" selection-end-line="28" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/5.1.6.RELEASE/spring-context-5.1.6.RELEASE.jar!/org/springframework/context/annotation/ComponentScans.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="250">
@@ -342,20 +481,115 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_74/src.zip!/java/lang/Runnable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="517">
+          <caret line="67" column="28" selection-start-line="67" selection-start-column="27" selection-end-line="67" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/controller/pt_1_controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="350">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10">
+          <caret line="3" column="5" lean-forward="true" selection-start-line="3" selection-start-column="5" selection-end-line="3" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="35" column="9" selection-start-line="35" selection-start-column="9" selection-end-line="35" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/service/pt_1_service.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="14" column="15" selection-start-line="14" selection-start-column="15" selection-end-line="14" selection-end-column="15" />
+        <state relative-caret-position="252">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_74/src.zip!/java/util/List.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="217">
+          <caret line="599" column="6" selection-start-line="599" selection-start-column="6" selection-end-line="599" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/threads/Produce.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="377">
+          <caret line="25" column="11" selection-start-line="25" selection-start-column="11" selection-end-line="25" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#354#355#0" expanded="true" />
+            <element signature="e#387#388#0" expanded="true" />
+            <element signature="e#464#465#0" expanded="true" />
+            <element signature="e#484#485#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/threads/Consume.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="377">
+          <caret line="26" column="24" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#395#396#0" expanded="true" />
+            <element signature="e#415#416#0" expanded="true" />
+            <element signature="e#500#501#0" expanded="true" />
+            <element signature="e#531#532#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/test/pt_1_test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="26" column="18" selection-start-line="26" selection-start-column="16" selection-end-line="26" selection-end-column="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/enums/Store.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#610#611#0" expanded="true" />
+            <element signature="e#639#640#0" expanded="true" />
+            <element signature="e#680#681#0" expanded="true" />
+            <element signature="e#716#717#0" expanded="true" />
+            <element signature="e#759#760#0" expanded="true" />
+            <element signature="e#791#792#0" expanded="true" />
+            <element signature="e#848#849#0" expanded="true" />
+            <element signature="e#890#891#0" expanded="true" />
+            <element signature="e#925#926#0" expanded="true" />
+            <element signature="e#959#960#0" expanded="true" />
+            <element signature="e#1010#1011#0" expanded="true" />
+            <element signature="e#1056#1057#0" expanded="true" />
+            <element signature="e#1091#1092#0" expanded="true" />
+            <element signature="e#1125#1126#0" expanded="true" />
+            <element signature="e#1176#1177#0" expanded="true" />
+            <element signature="e#1222#1223#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
