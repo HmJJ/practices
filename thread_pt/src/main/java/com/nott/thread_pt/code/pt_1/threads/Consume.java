@@ -3,9 +3,6 @@ package com.nott.thread_pt.code.pt_1.threads;
 import com.nott.thread_pt.code.pt_1.enums.Store;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.validation.constraints.Min;
-import java.util.List;
-
 /**
  * @Author: wangjun
  * @Description:

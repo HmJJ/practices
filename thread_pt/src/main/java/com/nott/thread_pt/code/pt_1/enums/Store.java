@@ -33,7 +33,7 @@ public class Store {
         if (inventory.size() < MAX_PRODUCT) {
             try {
                 wait();
-                log.info("缺货，稍后再取");
+                log.info("缺货，请等待厂家生产");
             }catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -41,7 +41,7 @@ public class Store {
         }
 
         try {
-            log.info("消费者取走了第" + inventory.get(0) + "个产品.");
+            log.info("商店卖出了第" + inventory.get(0) + "个产品.");
             inventory.remove(0);
         }catch (Exception e) {
             e.printStackTrace();
@@ -53,7 +53,7 @@ public class Store {
         if (inventory.size() >= MAX_PRODUCT) {
             try {
                 wait();
-                log.info("产品已满，请稍后再生产");
+                log.info("库存充足，请稍后再生产");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -62,7 +62,7 @@ public class Store {
 
         output++;
         inventory.add(output);
-        log.info("生产者生产第" + output + "个产品");
+        log.info("厂家生产第" + output + "个产品");
         notifyAll();
     }
 
