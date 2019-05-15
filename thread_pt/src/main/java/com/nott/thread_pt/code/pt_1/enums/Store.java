@@ -43,6 +43,7 @@ public class Store {
         try {
             log.info("商店卖出了第" + inventory.get(0) + "个产品.");
             inventory.remove(0);
+            log.info(inventory.toString());
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -63,6 +64,7 @@ public class Store {
         output++;
         inventory.add(output);
         log.info("厂家生产第" + output + "个产品");
+        log.info(inventory.toString());
         notifyAll();
     }
 
