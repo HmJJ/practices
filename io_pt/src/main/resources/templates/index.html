@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html th:lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>INDEX</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+</head>
+<body>
+    <div class="layui-upload" style="margin: 200px auto; width: 600px">
+        <div class="layui-upload-list">
+            <img class="layui-upload-img" style="width: 550px;height: 400px;margin: 0 10px 10px 0;" id="uploadImg">
+        </div>
+        <button type="button" class="layui-btn" id="uploadBtn">上传图片</button>
+        <a th:href="@{/showPhoto(league_id=${league.league_id})}">
+            <button type="button" class="layui-btn layui-btn-normal">完成</button>
+        </a>
+    </div>
+</body>
+
+<script>
+
+    layui.use('upload',function () {
+        var $=layui.jquery,upload=layui.upload;
+
+        //普通图片上传
+        var uploadInst=upload.render({
+            elem:'#uploadBtn',
+            url:'/uploadImg',
+            before:function (obj) {
+                //预览本地文件示例
+                obj.preview(function (index,file,result) {
+                    $('uploadImg').attr('src',result);
+                });
+            },
+            done:function (res) {
+                //如果上传失败
+                if (res.code>0){
+                    return layer.msg('上传失败');
+                }
+                //上传成功
+                layer.msg('上传成功');
+            }
+        });
+    });
+
+</script>
+
+</html>
