@@ -1,0 +1,127 @@
+chmod -R 777 ./bin
+
+docker rmi --force $(docker images | grep example.com | awk '{print $3}')
+
+配置crypto-config.yaml和configtx.yaml文件
+
+./bin/cryptogen generate --config=./crypto-config.yaml
+
+mkdir channel-artifacts
+./bin/configtxgen -profile ThreeOrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block
+
+./bin/configtxgen -profile ThreeOrgsChannel -outputCreateChannelTx ./channel-artifacts/mychannel.tx -channelID mychannel
+
+docker-compose -f docker-compose-orderer.yaml up -d
+
+#
+# Org1 peer0
+#
+
+docker-compose -f docker-compose-org1-peer0.yaml up -d
+
+docker exec -it peer0Cli bash
+
+ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+peer channel create -o orderer.example.com:7050 -c mychannel -f ./channel-artifacts/mychannel.tx --tls --cafile $ORDERER_CA
+
+peer channel join -b mychannel.block
+
+peer chaincode install -n example02 -p github.com/hyperledger/fabric/endorse/chaincode/go/example02/ -v 1.0
+
+ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+peer chaincode instantiate -o orderer.example.com:7050 --tls --cafile $ORDERER_CA -C mychannel -n example02 -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OR ('Org1MSP.peer','Org2MSP.peer','Org3MSP.peer')"
+
+peer chaincode query -C mychannel -n example02 -c '{"Args":["query","a"]}'
+peer chaincode invoke --tls --cafile $ORDERER_CA -C mychannel -n example02 -c '{"Args":["invoke","a","b","10"]}'
+peer chaincode query -C mychannel -n example02 -c '{"Args":["query","b"]}'
+
+#
+# Org1 peer1
+#
+
+docker-compose -f docker-compose-org1-peer1.yaml up -d
+docker exec -it peer1Cli bash
+
+ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+peer channel fetch 0 mychannel.block -o orderer.example.com:7050 --tls --cafile $ORDERER_CA -c mychannel
+
+peer channel join -b mychannel.block
+
+peer chaincode install -n example02 -p github.com/hyperledger/fabric/endorse/chaincode/go/example02 -v 1.0
+
+peer chaincode query -C mychannel -n example02 -c '{"Args":["query","a"]}'
+peer chaincode invoke --tls --cafile $ORDERER_CA -C mychannel -n example02 -c '{"Args":["invoke","a","b","10"]}'
+
+#
+# Org2 peer0
+#
+
+docker-compose -f docker-compose-org2-peer0.yaml up -d
+docker exec -it peer0Cli bash
+
+ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+peer channel fetch 0 mychannel.block -o orderer.example.com:7050 --tls --cafile $ORDERER_CA -c mychannel
+
+peer channel join -b mychannel.block
+
+peer chaincode install -n example02 -p github.com/hyperledger/fabric/endorse/chaincode/go/example02 -v 1.0
+
+peer chaincode query -C mychannel -n example02 -c '{"Args":["query","a"]}'
+peer chaincode invoke --tls --cafile $ORDERER_CA -C mychannel -n example02 -c '{"Args":["invoke","a","b","10"]}'
+
+#
+# Org2 peer1
+#
+
+docker-compose -f docker-compose-org2-peer1.yaml up -d
+docker exec -it peer1Cli bash
+
+ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+peer channel fetch 0 mychannel.block -o orderer.example.com:7050 --tls --cafile $ORDERER_CA -c mychannel
+
+peer channel join -b mychannel.block
+
+peer chaincode install -n example02 -p github.com/hyperledger/fabric/endorse/chaincode/go/example02 -v 1.0
+
+peer chaincode query -C mychannel -n example02 -c '{"Args":["query","a"]}'
+peer chaincode invoke --tls --cafile $ORDERER_CA -C mychannel -n example02 -c '{"Args":["invoke","a","b","10"]}'
+
+#
+# Org3 peer0
+#
+
+docker-compose -f docker-compose-org3-peer0.yaml up -d
+docker exec -it peer0Cli bash
+
+ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+peer channel fetch 0 mychannel.block -o orderer.example.com:7050 --tls --cafile $ORDERER_CA -c mychannel
+
+peer channel join -b mychannel.block
+
+peer chaincode install -n example02 -p github.com/hyperledger/fabric/endorse/chaincode/go/example02 -v 1.0
+
+peer chaincode query -C mychannel -n example02 -c '{"Args":["query","a"]}'
+peer chaincode invoke --tls --cafile $ORDERER_CA -C mychannel -n example02 -c '{"Args":["invoke","a","b","10"]}'
+
+#
+# Org3 peer1
+#
+
+docker-compose -f docker-compose-org3-peer1.yaml up -d
+docker exec -it peer1Cli bash
+
+ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
+peer channel fetch 0 mychannel.block -o orderer.example.com:7050 --tls --cafile $ORDERER_CA -c mychannel
+
+peer channel join -b mychannel.block
+
+peer chaincode install -n example02 -p github.com/hyperledger/fabric/endorse/chaincode/go/example02 -v 1.0
+
+peer chaincode query -C mychannel -n example02 -c '{"Args":["query","a"]}'
+peer chaincode invoke --tls --cafile $ORDERER_CA -C mychannel -n example02 -c '{"Args":["invoke","a","b","10"]}'
+
+
+./bin/configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID mychannel -asOrg Org1MSP
+./bin/configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPanchors.tx -channelID mychannel -asOrg Org2MSP
+./bin/configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org3MSPanchors.tx -channelID mychannel -asOrg Org3MSP
