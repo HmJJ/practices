@@ -28,6 +28,8 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"encoding/json"
+	"time"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	sc "github.com/hyperledger/fabric/protos/peer"
@@ -42,6 +44,14 @@ const (
 	OK    = 200
 	ERROR = 500
 )
+
+type Endorse struct {
+	Id string            //id（可以是姓名）
+	ContentType string   //类型
+	Content string   	 //数据
+	CreateDate time.Time //创建日期
+	ModifyDate time.Time //创建日期
+}
 
 // Init is called when the smart contract is instantiated
 func (s *SmartContract) Init(APIstub shim.ChaincodeStubInterface) sc.Response {
@@ -60,20 +70,10 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 	function, args := APIstub.GetFunctionAndParameters()
 
 	// Route to the appropriate handler function to interact with the ledger appropriately
-	if function == "update" {
-		return s.update(APIstub, args)
-	} else if function == "get" {
-		return s.get(APIstub, args)
-	} else if function == "prunefast" {
-		return s.pruneFast(APIstub, args)
-	} else if function == "prunesafe" {
-		return s.pruneSafe(APIstub, args)
-	} else if function == "delete" {
-		return s.delete(APIstub, args)
-	} else if function == "putstandard" {
-		return s.putStandard(APIstub, args)
-	} else if function == "getstandard" {
-		return s.getStandard(APIstub, args)
+	if function == "add" {
+		return s.addWithIdAndType(APIstub, args)
+	} else if function == "queryByIdAndType" {
+		return s.queryByIdAndType(APIstub, args)
 	}
 
 	return shim.Error("Invalid Smart Contract function name.")
@@ -128,6 +128,116 @@ func (s *SmartContract) update(APIstub shim.ChaincodeStubInterface, args []strin
 	}
 
 	return shim.Success([]byte(fmt.Sprintf("Successfully added %s%s to %s", op, args[1], name)))
+}
+
+/* 添加/修改 通用信息 */
+func (t *SmartContract)addWithIdAndType(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+	
+	var id, contentType, content, result string
+	var err error
+	notExist := true
+
+	if len(args) != 3 {
+		return shim.Error("Incorrect number of arguments. Expecting id, contentType, content")
+	}
+
+	// Initialize the chaincode
+	id = args[0]
+	contentType = args[1]
+	content = args[2]
+
+
+	txid := APIstub.GetTxID()
+
+	key, err := APIstub.CreateCompositeKey("Id~ContentType~txID:", []string{id, contentType, txid})
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	databytes, err := APIstub.GetState(key)
+	if err != nil {
+		return shim.Error("Failed to get state")
+	}
+
+	if databytes != nil {
+		notExist = false
+	}
+
+	now := time.Now()
+
+	if notExist {
+		// Write the state to the ledger
+		endorse := Endorse{Id:id, ContentType:contentType, Content:content, CreateDate:now, ModifyDate:now}
+
+		endorsebytes,_ := json.Marshal(endorse)
+		err = APIstub.PutState(key, endorsebytes)
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
+		result = string(endorsebytes)
+	} else {
+		endorse := Endorse{}
+		err  = json.Unmarshal(databytes, &endorse)
+
+		endorse.Content = content
+		endorse.ModifyDate = now
+
+		newendorsebytes,_ := json.Marshal(endorse)
+		err = APIstub.PutState(key, newendorsebytes)
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
+		result = string(newendorsebytes)
+	}
+
+	resultbytes,_ := json.Marshal(result)
+	return shim.Success(resultbytes)
+}
+
+/* 根据id以及contentType查询 */
+func (t *SmartContract) queryByIdAndType(stub shim.ChaincodeStubInterface, args []string) sc.Response {
+	var id, contentType string
+
+	if len(args) != 2 {
+		return shim.Error("Incorrect number of arguments. Expecting id, contentType")
+	}
+
+	id = args[0]
+	contentType = args[1]
+
+	resultIterator, err := stub.GetStateByPartialCompositeKey("Id~ContentType~txID:", []string{id, contentType})
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Could not retrieve value for %s,%s: %s", id, contentType, err.Error()))
+	}
+	defer resultIterator.Close()
+
+	// Check the variable existed
+	if !resultIterator.HasNext() {
+		return shim.Error(fmt.Sprintf("No variable by the id %s and contentType %s exists", id, contentType))
+	}
+
+	endorse := Endorse{}
+	for resultIterator.HasNext() {
+		item, _ := resultIterator.Next()
+		generalJsonBytes, err := stub.GetState(item.Key)
+		if err != nil {
+			return shim.Error("Failed to get state")
+		}
+		general := Endorse{}
+	   	err  = json.Unmarshal(generalJsonBytes, &general)
+		if err != nil {
+   			return shim.Error(err.Error())
+   		}
+
+   		if general.CreateDate.After(endorse.CreateDate) {
+   			endorse = general
+   		}
+	}
+
+	resultbytes,_ := json.Marshal(endorse)
+	return shim.Success(resultbytes)
 }
 
 /**

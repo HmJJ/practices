@@ -43,6 +43,14 @@ const (
 	ERROR = 500
 )
 
+type Endorse struct {
+	Id string            //id（可以是姓名）
+	ContentType string   //类型
+	Content string   	 //数据
+	CreateDate time.Time //创建日期
+	ModifyDate time.Time //创建日期
+}
+
 // Init is called when the smart contract is instantiated
 func (s *SmartContract) Init(APIstub shim.ChaincodeStubInterface) sc.Response {
 	return shim.Success(nil)
@@ -60,20 +68,10 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 	function, args := APIstub.GetFunctionAndParameters()
 
 	// Route to the appropriate handler function to interact with the ledger appropriately
-	if function == "update" {
-		return s.update(APIstub, args)
-	} else if function == "get" {
-		return s.get(APIstub, args)
-	} else if function == "prunefast" {
-		return s.pruneFast(APIstub, args)
-	} else if function == "prunesafe" {
-		return s.pruneSafe(APIstub, args)
-	} else if function == "delete" {
-		return s.delete(APIstub, args)
-	} else if function == "putstandard" {
-		return s.putStandard(APIstub, args)
-	} else if function == "getstandard" {
-		return s.getStandard(APIstub, args)
+	if function == "addWithIdAndContentType" {
+		return s.addWithIdAndContentType(APIstub, args)
+	} else if function == "getTransactionById" {
+		return s.getTransactionById(APIstub, args)
 	}
 
 	return shim.Error("Invalid Smart Contract function name.")
@@ -128,6 +126,69 @@ func (s *SmartContract) update(APIstub shim.ChaincodeStubInterface, args []strin
 	}
 
 	return shim.Success([]byte(fmt.Sprintf("Successfully added %s%s to %s", op, args[1], name)))
+}
+
+/* 添加/修改 通用信息 */
+func (t *EndorseChaincode)addWithIdAndContentType(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+	
+	var id, contentType, content, result string
+	var err error
+	notExist := true
+
+	if len(args) != 3 {
+		return shim.Error("Incorrect number of arguments. Expecting id, contentType, content")
+	}
+
+	// Initialize the chaincode
+	id = args[0]
+	contentType = args[1]
+	content = args[2]
+
+	key, err := stub.CreateCompositeKey("Id~ContentType:", []string{id, contentType})
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	databytes, err := stub.GetState(key)
+	if err != nil {
+		return shim.Error("Failed to get state")
+	}
+
+	if databytes != nil {
+		notExist = false
+	}
+
+	now := time.Now()
+
+	if notExist {
+		// Write the state to the ledger
+		endorse := Endorse{Id:id, ContentType:contentType, Content:content, CreateDate:now, ModifyDate:now}
+
+		endorsebytes,_ := json.Marshal(endorse)
+		err = stub.PutState(key, endorsebytes)
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
+		result = string(endorsebytes)
+	} else {
+		endorse := Endorse{}
+		err  = json.Unmarshal(databytes, &endorse)
+
+		endorse.Content = content
+		general.ModifyDate = now
+
+		newendorsebytes,_ := json.Marshal(endorse)
+		err = stub.PutState(key, newendorsebytes)
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
+		result = string(newendorsebytes)
+	}
+
+	resultbytes,_ := json.Marshal(result)
+	return shim.Success(resultbytes)
 }
 
 /**
@@ -197,6 +258,33 @@ func (s *SmartContract) get(APIstub shim.ChaincodeStubInterface, args []string) 
 	}
 
 	return shim.Success([]byte(strconv.FormatFloat(finalVal, 'f', -1, 64)))
+}
+
+/**
+ * Retrieves the aggregate value of a variable in the ledger. Gets all delta rows for the variable
+ * and computes the final value from all deltas. The args array for the invocation must contain the
+ * following argument:
+ *	- args[0] -> The name of the variable to get the value of
+ *
+ * @param APIstub The chaincode shim
+ * @param args The arguments array for the get invocation
+ *
+ * @return A response structure indicating success or failure with a message
+ */
+func (s *SmartContract) queryByTxId(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
+	// Check we have a valid number of args
+	if len(args) != 1 {
+		return shim.Error("Incorrect number of arguments, expecting 1")
+	}
+
+	txID := args[0]
+
+	datbytes, err := APIstub.getTransactionById(txID);
+	if err != nil {
+		shim.Error(err.Error())
+	}
+	resultbytes,_ := json.Marshal(datbytes)
+	return shim.Success(resultbytes)
 }
 
 /**
