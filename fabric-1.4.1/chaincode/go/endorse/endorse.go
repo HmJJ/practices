@@ -51,6 +51,7 @@ type Endorse struct {
 	Content string   	 //数据
 	CreateDate time.Time //创建日期
 	ModifyDate time.Time //创建日期
+	TxID string             //交易id
 }
 
 // Init is called when the smart contract is instantiated
@@ -74,6 +75,10 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 		return s.addWithIdAndType(APIstub, args)
 	} else if function == "queryByIdAndType" {
 		return s.queryByIdAndType(APIstub, args)
+	} else if function == "queryCountByIdAndType" {
+		return s.queryCountByIdAndType(APIstub, args)
+	} else if function == "queryHistoryByIdAndType" {
+		return s.queryHistoryByIdAndType(APIstub, args)
 	}
 
 	return shim.Error("Invalid Smart Contract function name.")
@@ -135,7 +140,6 @@ func (t *SmartContract)addWithIdAndType(APIstub shim.ChaincodeStubInterface, arg
 	
 	var id, contentType, content, result string
 	var err error
-	notExist := true
 
 	if len(args) != 3 {
 		return shim.Error("Incorrect number of arguments. Expecting id, contentType, content")
@@ -154,43 +158,17 @@ func (t *SmartContract)addWithIdAndType(APIstub shim.ChaincodeStubInterface, arg
 		return shim.Error(err.Error())
 	}
 
-	databytes, err := APIstub.GetState(key)
-	if err != nil {
-		return shim.Error("Failed to get state")
-	}
-
-	if databytes != nil {
-		notExist = false
-	}
-
 	now := time.Now()
+	// Write the state to the ledger
+	endorse := Endorse{Id:id, ContentType:contentType, Content:content, CreateDate:now, ModifyDate:now, TxID: txid}
 
-	if notExist {
-		// Write the state to the ledger
-		endorse := Endorse{Id:id, ContentType:contentType, Content:content, CreateDate:now, ModifyDate:now}
-
-		endorsebytes,_ := json.Marshal(endorse)
-		err = APIstub.PutState(key, endorsebytes)
-		if err != nil {
-			return shim.Error(err.Error())
-		}
-
-		result = string(endorsebytes)
-	} else {
-		endorse := Endorse{}
-		err  = json.Unmarshal(databytes, &endorse)
-
-		endorse.Content = content
-		endorse.ModifyDate = now
-
-		newendorsebytes,_ := json.Marshal(endorse)
-		err = APIstub.PutState(key, newendorsebytes)
-		if err != nil {
-			return shim.Error(err.Error())
-		}
-
-		result = string(newendorsebytes)
+	endorsebytes,_ := json.Marshal(endorse)
+	err = APIstub.PutState(key, endorsebytes)
+	if err != nil {
+		return shim.Error(err.Error())
 	}
+
+	result = string(endorsebytes)
 
 	resultbytes,_ := json.Marshal(result)
 	return shim.Success(resultbytes)
@@ -237,6 +215,94 @@ func (t *SmartContract) queryByIdAndType(stub shim.ChaincodeStubInterface, args 
 	}
 
 	resultbytes,_ := json.Marshal(endorse)
+	return shim.Success(resultbytes)
+}
+
+/* 根据id以及contentType查询历史记录总数 */
+func (t *SmartContract) queryCountByIdAndType(stub shim.ChaincodeStubInterface, args []string) sc.Response {
+	var id, contentType string
+
+	if len(args) != 2 {
+		return shim.Error("Incorrect number of arguments. Expecting id, contentType")
+	}
+
+	id = args[0]
+	contentType = args[1]
+
+	resultIterator, err := stub.GetStateByPartialCompositeKey("Id~ContentType~txID:", []string{id, contentType})
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Could not retrieve value for %s,%s: %s", id, contentType, err.Error()))
+	}
+	defer resultIterator.Close()
+
+	// Check the variable existed
+	if !resultIterator.HasNext() {
+		return shim.Error(fmt.Sprintf("No variable by the id %s and contentType %s exists", id, contentType))
+	}
+
+	count := 0
+	endorseMap := []Endorse{}
+	for resultIterator.HasNext() {
+		item, _ := resultIterator.Next()
+		endorsebyte, err := stub.GetState(item.Key)
+		if err != nil {
+			return shim.Error("Failed to get state")
+		}
+		endorse := Endorse{}
+	   	err  = json.Unmarshal(endorsebyte, &endorse)
+		if err != nil {
+   			return shim.Error(err.Error())
+   		}
+
+	    endorseMap = append(endorseMap, endorse)
+	}
+	count = len(endorseMap)
+
+	countStr := strconv.Itoa(count)
+
+	resultbytes,_ := json.Marshal(countStr)
+	return shim.Success(resultbytes)
+}
+
+/* 根据id以及contentType查询历史记录 */
+func (t *SmartContract) queryHistoryByIdAndType(stub shim.ChaincodeStubInterface, args []string) sc.Response {
+	var id, contentType string
+
+	if len(args) != 2 {
+		return shim.Error("Incorrect number of arguments. Expecting id, contentType")
+	}
+
+	id = args[0]
+	contentType = args[1]
+
+	resultIterator, err := stub.GetStateByPartialCompositeKey("Id~ContentType~txID:", []string{id, contentType})
+	if err != nil {
+		return shim.Error(fmt.Sprintf("Could not retrieve value for %s,%s: %s", id, contentType, err.Error()))
+	}
+	defer resultIterator.Close()
+
+	// Check the variable existed
+	if !resultIterator.HasNext() {
+		return shim.Error(fmt.Sprintf("No variable by the id %s and contentType %s exists", id, contentType))
+	}
+
+	endorseMap := []Endorse{}
+	for resultIterator.HasNext() {
+		item, _ := resultIterator.Next()
+		endorsebyte, err := stub.GetState(item.Key)
+		if err != nil {
+			return shim.Error("Failed to get state")
+		}
+		endorse := Endorse{}
+	   	err  = json.Unmarshal(endorsebyte, &endorse)
+		if err != nil {
+   			return shim.Error(err.Error())
+   		}
+
+	    endorseMap = append(endorseMap, endorse)
+	}
+
+	resultbytes,_ := json.Marshal(endorseMap)
 	return shim.Success(resultbytes)
 }
 

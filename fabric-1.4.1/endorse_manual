@@ -1,6 +1,7 @@
 chmod -R 777 ./bin
 
 docker rmi --force $(docker images | grep example.com | awk '{print $3}')
+docker rmi --force $(docker images | grep hyperledger | awk '{print $3}')
 
 配置crypto-config.yaml和configtx.yaml文件
 
@@ -125,3 +126,20 @@ peer chaincode invoke --tls --cafile $ORDERER_CA -C mychannel -n example02 -c '{
 ./bin/configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID mychannel -asOrg Org1MSP
 ./bin/configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPanchors.tx -channelID mychannel -asOrg Org2MSP
 ./bin/configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org3MSPanchors.tx -channelID mychannel -asOrg Org3MSP
+
+
+
+add queryByIdAndType queryCountByIdAndType queryHistoryByIdAndType
+
+peer chaincode install -n endorse -p github.com/hyperledger/fabric/endorse/chaincode/go/endorse -v 1.7
+
+ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+peer chaincode instantiate -o orderer.example.com:7050 --tls --cafile $ORDERER_CA -C mychannel -n endorse -v 1.0 -c '{"Args":["init"]}' -P "OR ('Org1MSP.peer','Org2MSP.peer','Org3MSP.peer')"
+
+ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+peer chaincode upgrade -o orderer.example.com:7050 --tls --cafile $ORDERER_CA -C mychannel -n endorse -c '{"Args":["init"]}' -P "OR ('Org1MSP.peer','Org2MSP.peer','Org3MSP.peer')" -v 1.7
+
+peer chaincode query -C mychannel -n endorse -c '{"Args":["queryByIdAndType","user001","contact"]}'
+peer chaincode query -C mychannel -n endorse -c '{"Args":["queryCountByIdAndType","user001","contact"]}'
+peer chaincode query -C mychannel -n endorse -c '{"Args":["queryHistoryByIdAndType","user001","contact"]}'
+peer chaincode invoke --tls --cafile $ORDERER_CA -C mychannel -n endorse -c '{"Args":["add","user001","contact","first contact"]}'
