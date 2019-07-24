@@ -1,4 +1,6 @@
-package com.nott.gof.singleton;
+package com.nott.gof.singleton.test;
+
+import com.nott.gof.singleton.code.LazySingleton;
 
 /**
  * @Author: wangjun

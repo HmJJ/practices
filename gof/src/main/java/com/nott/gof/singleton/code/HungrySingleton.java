@@ -1,4 +1,4 @@
-package com.nott.gof.singleton;
+package com.nott.gof.singleton.code;
 
 import javax.swing.*;
 
@@ -18,7 +18,7 @@ public class HungrySingleton extends JPanel {
 
     private HungrySingleton() {
 
-        JLabel l1 = new JLabel(new ImageIcon("resources/images/Bajie.jpg"));
+        JLabel l1 = new JLabel(new ImageIcon("src/main/resources/images/Bajie.jpg"));
         this.add(l1);
 
     };
