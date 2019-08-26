@@ -26,5 +26,18 @@ public class RedisPtApplicationTests {
 			e.printStackTrace();
 		}
 	}
+	@Test
+	public void test() {
+		Boolean flag = Boolean.getBoolean("0");
+		System.out.println(flag);
+		Boolean flag2 = Boolean.getBoolean("1");
+		System.out.println(flag2);
+		Boolean flag3 = Boolean.getBoolean("true");
+		System.out.println(flag3);
+		Boolean flag4 = Boolean.getBoolean("false");
+		System.out.println(flag4);
+		Boolean flag5 = Boolean.getBoolean("JAVA_HOME");
+		System.out.println(flag5);
+	}
 
 }
