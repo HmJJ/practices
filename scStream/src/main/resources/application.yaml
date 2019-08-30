@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/nott?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: root
+    maximumPoolSize: 100
+  jpa.show-sql: false
+
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: quene.log.messages
+          binder: local_rabbit
+          group: cloudStream
+        output:
+          destination: quene.log.messages
+          binder: local_rabbit
+      binders:
+        local_rabbit:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: localhost
+                port: 5672
+                username: nott
+                password: 123456
+                virtual-host: /
+
+server:
+  port: 6060
