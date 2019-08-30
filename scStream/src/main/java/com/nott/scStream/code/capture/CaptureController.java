@@ -3,12 +3,8 @@ package com.nott.scStream.code.capture;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.nott.scStream.code.capture.vo.CaptureVo;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.springframework.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
@@ -25,30 +21,34 @@ import java.util.Map;
  **/
 @RestController
 @RequestMapping(value = "capture")
-public class captureController {
+public class CaptureController {
+
+    private static Logger log = LoggerFactory.getLogger(CaptureController.class);
 
     @PostMapping(value = "getInfo")
-    public void getInfo(@RequestBody CaptureVo vo) {
-        int currentPage = 1;
-        int origin = 1;
-        JSONObject object = get(currentPage, origin);
-        int prePageTotal = (Integer) object.get("storeCount");
-        int pageTotal = (int) Math.ceil(prePageTotal/10);
+    public String getInfo(@RequestBody CaptureVo vo) {
 
         for (int i = 1; i <= 31; i++) {
+            int currentPage = 1;
+            JSONObject object = get(i, currentPage);
+            int prePageTotal = (Integer) object.get("storeCount");
+            int pageTotal = (int) Math.ceil(prePageTotal/10.0);
             for (int j = 1; j <= pageTotal; j++) {
-                JSONObject jsonObject = get(j, i);
-                JSONObject result = jsonObject.getJSONObject("locShopProductSet");
+                JSONObject jsonObject = get(i, j);
+                if (jsonObject.get("locShopProductSet") == null) {
+                    continue;
+                }
+                JSONArray result = jsonObject.getJSONArray("locShopProductSet");
                 System.out.println(result.toJSONString());
                 String fileName = "data_" + i + "_" + j + ".txt";
-                File file = new File("D:\\data\\" + fileName);
+                File file = new File("D:\\data\\shopbox\\" + fileName);
                 FileOutputStream os = null;
                 try {
                     os = new FileOutputStream(file);
                     if (!file.exists()) {
                         file.createNewFile();
                     }
-                    byte[] contentInBytes = jsonObject.getBytes("value");
+                    byte[] contentInBytes = result.toString().getBytes();
                     os.write(contentInBytes);
                     os.flush();
                 } catch (IOException e) {
@@ -58,12 +58,16 @@ public class captureController {
 
         }
 
+        log.info("Capture-getInfo: All Done!");
+
+        return "All Done!";
+
     }
 
     //https://cvas.jd.com/locShop/getAllShopLocShopProducts.action?callback=jQuery6972240&skuNum=1&physicalSkuId=2446806&firstAddCode=3&currentPage=3&pageSize=10&origin=1&redemptionCenter=0&sortType=6&sort=asc&rand=1567153466969&_=1567153466969
-    public JSONObject get(Integer currentPage, int origin) {
+    public JSONObject get(int firstAddCode, int currentPage) {
 
-        String url = "https://cvas.jd.com/locShop/getAllShopLocShopProducts.action?callback=jQuery6972240&skuNum=1&physicalSkuId=2446806&firstAddCode=3&currentPage="+currentPage+"&pageSize=10&origin="+origin+"&redemptionCenter=0&sortType=6&sort=asc&rand=1567153466969&_=1567153466969";
+        String url = "https://cvas.jd.com/locShop/getAllShopLocShopProducts.action?callback=jQuery6972240&skuNum=1&physicalSkuId=2446806&firstAddCode="+firstAddCode+"&currentPage="+currentPage+"&pageSize=10&origin=1&redemptionCenter=0&sortType=6&sort=asc&rand=1567153466969&_=1567153466969";
         String result = "";
         BufferedReader reader = null;
 
