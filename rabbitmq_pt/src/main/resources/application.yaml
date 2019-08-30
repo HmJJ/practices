@@ -27,4 +27,4 @@ spring:
       map-underscore-to-camel-case: true
 
 server:
-  port: 3213
+  port: 6060
