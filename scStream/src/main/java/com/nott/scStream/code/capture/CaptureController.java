@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.nott.scStream.code.capture.vo.CaptureVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
@@ -28,6 +29,8 @@ public class CaptureController {
     @PostMapping(value = "getInfo")
     public String getInfo(@RequestBody CaptureVo vo) {
 
+        int shopNumber = 0;
+
         for (int i = 1; i <= 31; i++) {
             int currentPage = 1;
             JSONObject object = get(i, currentPage);
@@ -39,20 +42,39 @@ public class CaptureController {
                     continue;
                 }
                 JSONArray result = jsonObject.getJSONArray("locShopProductSet");
-                System.out.println(result.toJSONString());
-                String fileName = "data_" + i + "_" + j + ".txt";
-                File file = new File("D:\\data\\shopbox\\" + fileName);
-                FileOutputStream os = null;
-                try {
-                    os = new FileOutputStream(file);
-                    if (!file.exists()) {
-                        file.createNewFile();
+                for (int s = 0; s < result.size(); s++) {
+                    shopNumber++;
+
+                    JSONObject shop = result.getJSONObject(s);
+                    String shopName = shop.getString("locShopName");
+                    String shopAddress = shop.getString("locShopFullAddr");
+                    JSONObject extend = shop.getJSONObject("extend");
+                    String score = "暂无评分";
+                    if (extend != null && extend.getString("service_score") != null) {
+                        score = extend.getString("service_score");
                     }
-                    byte[] contentInBytes = result.toString().getBytes();
-                    os.write(contentInBytes);
-                    os.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    JSONObject shopObj = new JSONObject();
+                    shopObj.put("shopName", shopName);
+                    shopObj.put("shopAddress", shopAddress);
+                    shopObj.put("score", score);
+                    System.out.println("shopNumber: " + shopNumber + ", shopName: " + shopName + ", score: " + score);
+                    shopObj.put("detail", result.toJSONString());
+
+                    shopName = StringUtils.trimAllWhitespace(shopName);
+                    String fileName = "data_" + shopNumber + "_" + shopName + "_" + score + ".txt";
+                    File file = new File("D:\\data\\shopbox\\" + fileName);
+                    FileOutputStream os = null;
+                    try {
+                        os = new FileOutputStream(file);
+                        if (!file.exists()) {
+                            file.createNewFile();
+                        }
+                        byte[] contentInBytes = shopObj.toString().getBytes();
+                        os.write(contentInBytes);
+                        os.flush();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -83,7 +105,7 @@ public class CaptureController {
                 int a = 0;
                 a++;
                 if (a > 5) {
-                    System.out.println(map.get("key"));
+                    System.out.println(map.get(key));
                 }
             }
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
@@ -105,12 +127,16 @@ public class CaptureController {
         }
 
         result = result.substring(result.indexOf("(") + 1, result.length() - 2);
-
-        JSONObject jsonObject = JSONObject.parseObject(result);
-        JSONObject value = jsonObject.getJSONObject("value");
+        JSONObject value = parse(result);
 
         return value;
 
+    }
+
+    public JSONObject parse(String result) {
+        JSONObject jsonObject = JSONObject.parseObject(result);
+        JSONObject value = jsonObject.getJSONObject("value");
+        return value;
     }
 
 }
