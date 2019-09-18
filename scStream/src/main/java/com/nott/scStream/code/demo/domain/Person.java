@@ -9,7 +9,7 @@ import javax.persistence.*;
  * @Modified By:
  **/
 @Entity
-@Table(name = "demo")
+@Table(name = "person")
 public class Person {
 
     private Long id;

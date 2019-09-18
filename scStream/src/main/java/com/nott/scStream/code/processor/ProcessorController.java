@@ -1,10 +1,8 @@
 package com.nott.scStream.code.processor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.messaging.Processor;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,15 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 @RequestMapping(value = "/processor")
-@EnableBinding(value = {Processor.class})
 public class ProcessorController {
 
+    private static Logger log = LoggerFactory.getLogger(ProcessorController.class);
+
     @Autowired
-    private Processor processor;
+    private ProcessorService processorService;
 
     @RequestMapping(value = "send")
     public Boolean send(@RequestParam String value) {
-        boolean flag = processor.output().send(MessageBuilder.withPayload(value).build());
+        boolean flag = processorService.send(value);
         return flag;
     }
 
