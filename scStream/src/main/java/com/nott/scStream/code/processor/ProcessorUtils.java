@@ -1,6 +1,5 @@
 package com.nott.scStream.code.processor;
 
-import com.nott.scStream.code.domain.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.annotation.EnableBinding;
