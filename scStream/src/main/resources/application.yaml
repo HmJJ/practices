@@ -6,6 +6,10 @@ spring:
     maximumPoolSize: 100
   jpa.show-sql: false
 
+  elasticsearch:
+    jest:
+      uris: http://127.0.0.1:9200
+
   cloud:
     stream:
       bindings:
