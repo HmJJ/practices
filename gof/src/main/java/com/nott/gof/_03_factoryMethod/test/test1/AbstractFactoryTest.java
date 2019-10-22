@@ -2,6 +2,7 @@ package com.nott.gof._03_factoryMethod.test.test1;
 
 import com.nott.gof._03_factoryMethod.code.AbstractFactory;
 import com.nott.gof._03_factoryMethod.code.Product;
+import com.nott.gof.utils.ReadXML;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +21,7 @@ public class AbstractFactoryTest {
         try {
             Product a;
             AbstractFactory af;
-            af = (AbstractFactory) ReadXML1.getObject();
+            af = (AbstractFactory) ReadXML.getObject("com.nott.gof._03_factoryMethod.code", "factoryMethod.xml");
             a = af.newProduct();
             a.show();
         }catch (Exception e) {
