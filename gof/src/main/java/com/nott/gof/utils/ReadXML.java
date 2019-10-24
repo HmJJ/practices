@@ -16,14 +16,14 @@ import java.io.File;
  **/
 public class ReadXML {
 
-    public static Object getObject(String classPath, String xmlName) {
+    public static Object getObject(String classPath, String xmlName, Integer index) {
         try {
             DocumentBuilderFactory dFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = dFactory.newDocumentBuilder();
             Document doc;
             doc = builder.parse(new File("src/main/resources/files/" + xmlName));
             NodeList nodeList = doc.getElementsByTagName("className");
-            Node classNode = nodeList.item(0).getFirstChild();
+            Node classNode = nodeList.item(index).getFirstChild();
             String cName = classPath + "." + classNode.getNodeValue();
             Class<?> clazz = Class.forName(cName);
             Object obj = clazz.newInstance();

@@ -21,7 +21,7 @@ public class AbstractFactoryTest {
         try {
             Product a;
             AbstractFactory af;
-            af = (AbstractFactory) ReadXML.getObject("com.nott.gof._03_factoryMethod.code", "factoryMethod.xml");
+            af = (AbstractFactory) ReadXML.getObject("com.nott.gof._03_factoryMethod.code", "factoryMethod.xml", 0);
             a = af.newProduct();
             a.show();
         }catch (Exception e) {

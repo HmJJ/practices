@@ -12,7 +12,7 @@ public class MotorAdapterTest {
 
     public static void main(String[] args) {
         System.out.println("适配器模式测试：");
-        Motor motor = (Motor) ReadXML.getObject("com.nott.gof._07_adapter.test.test1", "adapter.xml");
+        Motor motor = (Motor) ReadXML.getObject("com.nott.gof._07_adapter.test.test1", "adapter.xml", 0);
         motor.drive();
     }
 

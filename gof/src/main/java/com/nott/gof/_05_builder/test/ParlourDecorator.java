@@ -13,7 +13,7 @@ public class ParlourDecorator {
     public static void main(String[] args) {
         try {
             Decorator d;
-            d = (Decorator) ReadXML.getObject("com.nott.gof._05_builder.test", "builder.xml");
+            d = (Decorator) ReadXML.getObject("com.nott.gof._05_builder.test", "builder.xml", 0);
             ProjectManager m = new ProjectManager(d);
             Parlour p = m.decorate();
             p.show();

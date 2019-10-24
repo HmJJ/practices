@@ -17,7 +17,7 @@ public class FarmTest {
             Farm f;
             Animal a;
             Plant p;
-            f = (Farm) ReadXML.getObject("com.nott.gof._04_abstractFactory.test.factory", "abstractFactory.xml");
+            f = (Farm) ReadXML.getObject("com.nott.gof._04_abstractFactory.test.factory", "abstractFactory.xml", 0);
             a = f.newAnimal();
             p = f.newPlant();
             a.show();
