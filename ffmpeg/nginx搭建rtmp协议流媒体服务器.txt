@@ -1,0 +1,757 @@
+https://www.cnblogs.com/wainiwann/p/3866254.html
+
+1、安装依赖包:
+#yum -y install gcc glibc glibc-devel make nasm pkgconfig lib-devel openssl-devel expat-devel gettext-devel libtool mhash.x86_64 perl-Digest-SHA1.x86_64
+
+ 2、安装相关工具包
+1). git
+# mkdir soft-source
+# cd soft-source
+# wget http://codemonkey.org.uk/projects/git-snapshots/git/git-latest.tar.xz
+# xz -d git-latest.tar.xz
+# tar xzvf git-latest.tar 
+# cd git-2014-06-27
+# autoconf
+# ./configure
+# make && make install
+# git --version
+git version 2.0.0.GIT
+# cd ..
+
+2). zlib
+# wget http://zlib.net/zlib-1.2.8.tar.gz
+# tar -zxvf zlib-1.2.8.tar.gz cd zlib-1.2.8
+# ./configure
+# make
+# make install
+# cd ..
+
+3). pcre
+# wget http://exim.mirror.fr/pcre/pcre-8.12.tar.gz
+# tar zxvf pcre-8.12.tar.gz
+# cd pcre-8.12
+# ./configure
+# make && make install
+# cd ..
+
+4). yadmi
+yadmi的作用是为flv文件添加关键帧，才能实现拖动播放
+# wget http://sourceforge.net/projects/yamdi/files/yamdi/1.4/yamdi-1.4.tar.gz/download  
+# tar xzvf download
+# cd yamdi-1.4
+# make && make install
+# cd ..
+ 
+使用方法：
+# yamdi -i input.flv -o out.flv
+给input.flv文件 添加关键帧，输出为out.flv文件
+
+5). OpenSSL
+# wget http://www.openssl.org/source/openssl-1.0.2j.tar.gz
+# tar -xzf openssl-1.0.2j.tar.gz
+# cd openssl-1.0.2j
+# ./config --prefix=/usr/local/openssl
+# ./config -t
+# make
+# make install
+
+3、安装ffmpeg及其依赖包：
+1). Yasm
+# wget http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz
+# tar xzvf yasm-1.3.0.tar.gz
+# cd yasm-1.3.0
+# ./configure
+# make
+# make install
+# cd ..
+
+2). x264
+# git clone git://git.videolan.org/x264
+# cd x264
+# ./configure --enable-shared 
+# make
+# make install
+# cd ..
+
+3). LAME
+# wget http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
+# tar xzvf lame-3.99.5.tar.gz
+# cd lame-3.99.5
+#./configure --enable-nasm
+# make
+# make install
+# cd ..
+
+4). libogg
+# wget http://downloads.xiph.org/releases/ogg/libogg-1.3.0.tar.gz
+# tar xzvf libogg-1.3.0.tar.gz
+# cd libogg-1.3.0
+# ./configure
+# make
+# make install
+# cd ..
+
+5). libvorbis
+# wget http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.3.tar.gz
+# tar xzvf libvorbis-1.3.3.tar.gz
+# cd libvorbis-1.3.3
+# echo /usr/local/lib >> /etc/ld.so.conf; ldconfig
+# ./configure
+# make
+# make install
+# cd ..
+
+6). libvpx
+# git clone https://github.com/turbulenz/libvpx.git
+# cd libvpx
+# ./configure  --enable-shared
+# make
+# make install
+# cd ..
+
+7). FAAD2
+# wget http://downloads.sourceforge.net/project/faac/faad2-src/faad2-2.7/faad2-2.7.tar.gz
+# tar zxvf faad2-2.7.tar.gz
+# cd faad2-2.7
+# ./configure
+# make
+# make install
+# cd ..
+
+8). FAAC
+# wget http://downloads.sourceforge.net/project/faac/faac-src/faac-1.28/faac-1.28.tar.gz
+# tar zxvf faac-1.28.tar.gz
+# cd faac-1.28
+# ./configure
+# make
+# make install
+# cd ..
+
+注：编译时可能遇到一下错误：
+
+mpeg4ip.h:126: error: new declaration ‘char* strcasestr(const char*, const char*)’
+
+解决方法：
+
+从123行开始修改此文件mpeg4ip.h，到129行结束。
+
+修改前：
+
+#ifdef __cplusplus
+
+extern "C" {
+
+#endif
+
+char *strcasestr(const char *haystack, const char *needle);
+
+#ifdef __cplusplus
+
+}
+
+#endif
+
+ 
+
+修改后：
+
+#ifdef __cplusplus
+
+extern "C++" {
+
+#endif
+
+const char *strcasestr(const char *haystack, const char *needle);
+
+#ifdef __cplusplus
+
+}
+
+#endif
+
+
+ 9). Xvid
+# wget http://downloads.xvid.org/downloads/xvidcore-1.3.2.tar.gz
+# tar zxvf xvidcore-1.3.2.tar.gz
+# cd xvidcore/build/generic
+# ./configure
+# make
+# make install
+# cd ..
+
+10). ffmpeg
+# git clone git://source.ffmpeg.org/ffmpeg
+# cd ffmpeg
+# ./configure  --prefix=/opt/ffmpeg/ --enable-version3  
+--enable-libvpx --enable-libfaac --enable-libmp3lame  
+--enable-libvorbis --enable-libx264 --enable-libxvid 
+--enable-shared --enable-gpl --enable-postproc --enable-nonfree  
+--enable-avfilter --enable-pthreads
+# make && make install
+# cd ..
+
+修改/etc/ld.so.conf如下:
+include ld.so.conf.d/*.conf
+/lib
+/lib64
+/usr/lib
+/usr/lib64
+/usr/local/lib
+/usr/local/lib64
+/opt/ffmpeg/lib
+# ldconfig
+
+
+二、安装Nginx相关模块
+1. 模块安装
+# wget http://h264.code-shop.com/download/nginx_mod_h264_streaming-2.2.7.tar.gz
+# tar zxvf nginx_mod_h264_streaming-2.2.7.tar.gz
+# git clone git://github.com/arut/nginx-rtmp-module.git
+
+2. 创建用户和组
+# groupadd www
+# useradd -g www www
+
+3. nginx安装
+# wget http://nginx.org/download/nginx-1.6.0.tar.gz
+# tar zxvf nginx-1.6.0.tar.gz
+# cd nginx-1.6.0
+
+4.编译安装nginx
+
+在nginx-1.6.0目录下新建文件：nginx_configure.sh
+
+然后使用gedit 打开进行编辑：
+
+复制代码
+#!/bin/sh
+
+ echo "configure start ..."
+ ./configure \
+--prefix=/usr/local/nginx \
+--sbin-path=/usr/local/nginx/nginx \
+--conf-path=/usr/local/nginx/nginx.conf \
+--pid-path=/usr/local/nginx/nginx.pid \
+--error-log-path=/usr/local/nginx/logs/error.log \
+--add-module=../nginx_mod_h264_streaming-2.2.7 \
+--with-pcre=../pcre-8.12 \
+--with-zlib=../zlib-1.2.8 \
+--with-http_dav_module \
+--with-http_flv_module \
+--with-http_stub_status_module \
+--without-http_scgi_module \
+--without-http_uwsgi_module \
+--without-http_gzip_module \
+--without-http_ssi_module \
+--without-http_proxy_module \
+--without-http_memcached_module \
+--without-http_empty_gif_module \
+--without-mail_pop3_module \
+--without-mail_imap_module \
+--without-mail_smtp_module \
+--with-http_ssl_module \
+--with-openssl=../openssl-1.0.1c \
+--add-module=../nginx-rtmp-module \
+--with-cc-opt=-I/opt/ffmpeg/include \
+--with-ld-opt=`-L/opt/ffmpeg/lib -Wl, -rpath=/opt/ffmpeg/lib`
+ echo "configure end!"
+复制代码
+ 
+
+【保存并退出】
+# chmod +x nginx_configure.sh
+# ./nginx_configure.sh
+# make
+
+# make install
+
+备注：
+
+在执行make的时候可能出现错误1：
+
+adding module in ../nginx_mod_h264_streaming-2.2.7
+
+ + ngx_http_h264_streaming_module was configured
+
+adding module in ../nginx-rtmp-module
+
+ + ngx_rtmp_module was configured
+
+checking for OpenSSL library ... not found
+
+ 
+
+./configure: error: SSL modules require the OpenSSL library.
+
+You can either do not enable the modules, or install the OpenSSL library
+
+into the system, or build the OpenSSL library statically from the source
+
+with nginx by using --with-openssl=<path> option.
+
+ 
+
+configure end!
+
+root@ubuntu:/home/song/nginx-t/nginx-1.6.0# make
+
+make: *** No rule to make target `build', needed by `default'.  Stop.
+
+ 
+
+解决方法：
+
+a)可以安装ssl
+
+apt-get install openssl
+
+apt-get install libssl-dev
+
+b)也可以添加
+
+--with-openssl=<path>
+
+在执行make的时候可能出现错误2：
+
+/root/nginx_mod_h264_streaming-2.2.7/src/ngx_http_streaming_module.c: In function ‘ngx_streaming_handler’:
+
+ 
+
+/root/nginx_mod_h264_streaming-2.2.7/src/ngx_http_streaming_module.c:158: error: ‘ngx_http_request_t’ has no member named ‘zero_in_uri’
+
+ 
+
+make[1]: *** [objs/addon/src/ngx_http_h264_streaming_module.o] Error 1
+
+ 
+
+make[1]: Leaving directory `/root/nginx-0.8.54'
+
+ 
+
+make: *** [build] Error 2
+
+ 
+
+解决方法：
+
+那么将src/ngx_http_streaming_module.c文件中以下代码删除或者是注释掉就可以了：
+
+/* TODO: Win32 */
+
+if (r->zero_in_uri)
+
+{
+
+return NGX_DECLINED;
+
+}
+
+ 
+
+在执行make的时候可能出现错误3：
+
+../nginx_mod_h264_streaming-2.2.7/src/mp4_reader.c: 在函数‘esds_read’中:
+
+../nginx_mod_h264_streaming-2.2.7/src/mp4_reader.c:377:16: 错误： 变量‘stream_priority’被设定但未被使用 [-Werror=unused-but-set-variable]
+
+../nginx_mod_h264_streaming-2.2.7/src/mp4_reader.c:376:12: 错误： 变量‘stream_id’被设定但未被使用 [-Werror=unused-but-set-variable]
+
+../nginx_mod_h264_streaming-2.2.7/src/mp4_reader.c: 在函数‘stsd_parse_vide’中:
+
+../nginx_mod_h264_streaming-2.2.7/src/mp4_reader.c:529:22: 错误： 变量‘level_indication’被设定但未被使用 [-Werror=unused-but-set-variable]
+
+../nginx_mod_h264_streaming-2.2.7/src/mp4_reader.c:528:22: 错误： 变量‘profile_compatibility’被设定但未被使用 [-Werror=unused-but-set-variable]
+
+../nginx_mod_h264_streaming-2.2.7/src/mp4_reader.c:527:22: 错误： 变量‘profile_indication’被设定但未被使用 [-Werror=unused-but-set-variable]
+
+../nginx_mod_h264_streaming-2.2.7/src/mp4_reader.c:526:22: 错误： 变量‘configuration_version’被设定但未被使用 [-Werror=unused-but-set-variable]
+
+cc1: all warnings being treated as errors
+
+make[1]: *** [objs/addon/src/mp4_reader.o] 错误 1
+
+ 
+
+解决方法：
+
+# vim objs/Makefile (修改objs/Makefile文件, 去掉其中的"-Werror"), 然后就能够正常编译了.
+
+然后在make就能过了。
+
+ 
+
+三、配置Nginx相关模块
+
+1.
+
+安装好了之后终端进入 nginx安装的目录 ： /usr/local/nginx/html/
+
+然后新建目录：nginx-rtmp-module
+
+然后拷贝 之前用于存放下载 nginx 所需资源包的目录 ：/root/nginx/nginx-rtmp-module/
+
+拷贝 目录 test 到/usr/local/nginx/html/ 目录下：
+
+# cp /root/nginx-rtmp-module/test /usr/local/nginx/html/nginx-rtmp-module/
+
+# cp /root/nginx-rtmp-module/stat.xsl /usr/local/nginx/html/nginx-rtmp-module/
+
+2.
+
+拷贝之后就需要修改 /usr/local/nginx/nginx.conf 文件：
+
+下面是配置好的nginx.conf 文件：
+
+复制代码
+#user  nobody;
+worker_processes  4;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+error_log  logs/error.log  info;
+
+pid        logs/nginx.pid;
+worker_rlimit_nofile 51200;
+
+
+events {
+    use epoll;
+    worker_connections  51200;
+}
+
+#切换自动推送(多 worker 直播流)模式。默认为 off
+rtmp_auto_push on;
+
+#当 worker 被干掉时设置自动推送连接超时时间。默认为 100 毫秒
+rtmp_auto_push_reconnect 1s;
+
+#设置用于流推送的 UNIX 域套接字目录。默认为 /tmp
+#rtmp_socket_dir /var/sock;
+
+rtmp {
+    server {
+            listen 1935;
+
+        #点播配置
+                application vod {
+                    play /opt/media/nginxrtmp/flv;
+                }
+        
+        #直播流配置
+            application live {
+                    live on;
+            #为 rtmp 引擎设置最大连接数。默认为 off
+            max_connections 1024;
+
+                    # default recorder
+                    record all;
+                    record_path /var/rec;
+ 
+                    recorder audio {
+                         record audio;
+                         record_suffix -%d-%b-%y-%T.flv;
+                    } 
+
+                    recorder chunked {
+                        record all;
+                         record_interval 15s;
+                         record_path /var/rec/chunked;
+                    }
+
+            #on_publish http://localhost:8080/publish;  
+            #on_play http://localhost:8080/play;  
+            #on_record_done http://localhost:8080/record_done;
+            
+            #rtmp日志设置
+             #access_log logs/rtmp_access.log new;
+             #access_log logs/rtmp_access.log;
+             #access_log off;
+
+             }
+        
+        #HLS协议支持
+        #application hls {  
+            #live on;  
+            #hls on;  
+            #hls_path /tmp/app;  
+            #hls_fragment 5s;  
+        #} 
+
+            application hls{
+        
+                    live on;
+                    hls on;
+                    hls_path /usr/local/nginx/html/app;
+                    hls_fragment 1s;
+            }
+ 
+
+        }
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+    #                  '$status $body_bytes_sent "$http_referer" '
+    #                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    server {
+        listen       80;
+        server_name  localhost;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        #location / {
+        #    root   html;
+        #    index  index.html index.htm;
+        #}
+
+        #error_page  404              /404.html;
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+
+        # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+        #
+        #location ~ \.php$ {
+        #    proxy_pass   http://127.0.0.1;
+        #}
+
+        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+        #
+        #location ~ \.php$ {
+        #    root           html;
+        #    fastcgi_pass   127.0.0.1:9000;
+        #    fastcgi_index  index.php;
+        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+        #    include        fastcgi_params;
+        #}
+
+        # deny access to .htaccess files, if Apache's document root
+        # concurs with nginx's one
+        #
+        #location ~ /\.ht {
+        #    deny  all;
+        #}
+
+    location /rtmp-publisher {  
+        root /root/nginx/nginx-rtmp-module/test;  
+    }  
+
+    #location /hls {  
+        #server hls fragments  
+        #types{  
+            #application/vnd.apple.mpegurl m3u8;  
+            #video/mp2t ts;  
+        #}
+  
+        #alias /usr/local/nginx/html;  
+        #expires -1;  
+    #}
+
+    location /hls {
+         #server hls fragments
+              types{
+                application/vnd.apple.mpegurl m3u8;
+                video/mp2t ts;
+              }
+
+             #alias /usr/local/nginx/html/app;
+         alias /usr/local/nginx/html;
+             expires -2;
+         }  
+
+    location / {  
+        #root /root/nginx/nginx-rtmp-module/test/rtmp-publisher;  
+        types{  
+          application/vnd.apple.mpegurl m3u8;  
+          video/mp2t ts;  
+        }
+  
+        root /usr/local/nginx/html/rtmp-publisher;  
+        expires -1;  
+    }  
+
+    }
+
+
+    # another virtual host using mix of IP-, name-, and port-based configuration
+    #
+    #server {
+    #    listen       8000;
+    #    listen       somename:8080;
+    #    server_name  somename  alias  another.alias;
+
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+
+
+    # HTTPS server
+    #
+    #server {
+    #    listen       443;
+    #    server_name  localhost;
+
+    #    ssl                  on;
+    #    ssl_certificate      cert.pem;
+    #    ssl_certificate_key  cert.key;
+
+    #    ssl_session_timeout  5m;
+
+    #    ssl_protocols  SSLv2 SSLv3 TLSv1;
+    #    ssl_ciphers  HIGH:!aNULL:!MD5;
+    #    ssl_prefer_server_ciphers   on;
+
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+
+    #支持flv
+    server
+        {
+            listen       8081;
+            server_name localhost;
+            #root /opt/pub/media/nginx; #http协议时候，flv视频位置
+        #root /root/nginx/nginx-rtmp-module/test/www;
+            root /usr/local/nginx/html/www;
+
+            location ~ .*.(flv|swf|mp4|wma|wmv)$ {
+                    valid_referers none blocked *.xxxx.com http://localhost;
+                    if ($invalid_referer) {
+                    return 403;
+                    }
+            }
+            location ~ \.flv$ {
+                    flv;
+                    #limit_conn one 20;#限制客户端并发连接数
+                    limit_rate 200k;#限制每客户端最大带宽
+            }
+            location ~ \.mp4$ {
+                    flv;
+                    #limit_conn one 20;
+                    limit_rate 200k;
+            }
+            #access_log  logs/nginxflv_access.log  main;
+        }
+
+    server
+        {
+            listen       8082;
+            server_name localhost;
+            index index.html;
+            location / {
+                #root /opt/pub/media/nginx-rtmp;
+        root /root/nginx/nginx-rtmp-module/test/rtmp-publisher;
+            }
+            #access_log  logs/nginxrtmpflv_access.log  main;
+        }
+
+    server {
+        listen      8080;
+    server_name localhost;
+    index player.html;
+
+        location /stat {
+            rtmp_stat all;
+            rtmp_stat_stylesheet /root/nginx/nginx-rtmp-module/stat.xsl;
+        }
+        location /stat.xsl {
+            root /root/nginx/nginx-rtmp-module;
+        }
+
+        location /rtmp-publisher {  
+            root /usr/local/nginx/html/test/rtmp-publisher;  
+        }  
+
+        location / {
+            root /root/nginx/nginx-rtmp-module/test/rtmp-publisher;
+        }
+    }
+
+}
+复制代码
+四、启动Nginx相关模块
+
+1.
+
+配置好之后就可以开启nginx服务器了。
+
+可以在终端执行：
+
+#service nginx start
+
+注：可能会出现一下错误：
+
+nginx: unrecognized service
+
+解决方法：
+
+下载nginx的启动脚本：
+# wget -O init-deb.sh http://library.linode.com/assets/660-init-deb.sh
+将脚本添加到init.d目录和生成可执行：
+# sudo mv init-deb.sh /etc/init.d/nginx
+# sudo chmod +x /etc/init.d/nginx
+加的nginx到系统启动：
+# sudo /usr/sbin/update-rc.d -f nginx defaults
+现在我们可以使用nginx的控制:
+
+sudo service nginx stop 
+sudo service nginx start 
+sudo service nginx restart
+sudo service nginx reload
+
+2.
+在开启之前记得要打开 1935端口。
+具体怎么打开此处不做介绍。
+
+3.
+但是开启的时候命令行要这样去启动：
+#  /usr/local/ngnix/nginx  –c  /usr/local/nginx/nginx.conf
+
+这样nginx 的rtmp协议流媒体服务器才能用。
+
+ 
+
+4.下面使用ffmpeg 往rtmp服务器推送一个视频：
+
+ffmpeg -re -i /home/song/Desktop/apk/test.flv -f flv rtmp://172.16.80.18/live/steam
+
+这样在 vlc或者 flash player 上就可以打开 rtmp地址：
+
+rtmp://172.16.80.18/live/steam
+
+进行观看了。
+
+---------------------------------------------------------------------------------
+
+注：如果ubuntu使用的是虚拟机安装的话，记得网络适配器 要选择 “桥接模式” 使用虚拟机里的ip 地址和 主机地址在一个网端，这样外部比如 手机 或者局域网内的其他机器才能访问
+
+该虚拟机上搭建的nginx服务器了。
+
+ 
+
+参考：http://blog.chinaunix.net/uid-26000296-id-4335063.html

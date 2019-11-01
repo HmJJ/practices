@@ -1,0 +1,179 @@
+https://blog.csdn.net/weixin_42651205/article/details/90448797
+
+gcc g++ cmake一些开发工具都装了之后
+下载提示：
+“正在连接 downloads.xiph.org|140.211.15.28|:443… 已连接。
+错误: 证书通用名 “xiph.org” 与所要求的主机名 “downloads.xiph.org” 不符。
+要以不安全的方式连接至 downloads.xiph.org，使用‘–no-check-certificate’ ”的 在wget后加–no-check-certificate
+
+根据自己需要的模块选择安装还是不安装
+
+1、安装yasm
+Yasm is an assembler released under the BSD license . Although it is notstrictly required for compiling the tools, it helps to improve the conversionspeed of ffmpeg when using HD codecs, so its installation is highlyrecommended. yasm is frequently available in the repositories of most popularLinux distribution, but it is preferred to install the latest version bycompiling its source code:
+wget http://www.tortall.net/projects/yasm/releases/yasm-1.2.0.tar.gz
+tar zxf yasm-1.2.0.tar.gz
+cd yasm-1.2.0
+./configure && make && make install
+
+安装nasm
+wget http://www.nasm.us/pub/nasm/releasebuilds/2.13/nasm-2.13.tar.gz
+tar zxvf nasm-2.13.tar.gz
+失败
+我下下来的是个tar包
+mv nasm-2.13.tar.gz nasm-2.13.tar
+tar xvf nasm-2.13.tar
+cd nasm-2.13
+./configure
+make && make install
+
+2、安装libogg
+Ogg is a free, open standard container format maintained bythe Xiph.Org Foundation. The Ogg format is unrestricted by software patents andis designed to provide for efficient streaming and manipulation of high qualitydigital multimedia.
+The Installation Process
+wget http://downloads.xiph.org/releases/ogg/libogg-1.3.0.tar.gz --no-check-certificate
+tar -zxvf libogg-1.3.0.tar.gz
+cd libogg-1.3.0
+./configure --prefix=/home/xxx/ffmpeg_build --bindir=/home/xxx/bin && make clean && make && make install
+
+3、安装libvorbis
+Vorbis is a audio compression format. It is roughlycomparable to other formats used to store and play digital music, such as MP3,VQF, AAC, and other digital audio formats. It is different from these otherformats because it is completely free, open, and unpatented.
+The Installation Process
+wget http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.3.tar.gz --no-check-certificate
+tar -zxvf libvorbis-1.3.3.tar.gz
+cd libvorbis-1.3.3
+./configure --prefix=/home/xxx/ffmpeg_build --bindir=/home/xxx/bin && make clean && make && make install
+
+4、安装libXvid
+Xvid is a video decoder and encoder library aimed atproviding the best compression efficiency and picture quality possible.
+wget http://downloads.xvid.org/downloads/xvidcore-1.3.3.tar.gz
+tar zxvf xvidcore-1.3.3.tar.gz
+cd xvidcore/build/generic
+./configure --prefix=/home/xxx/ffmpeg_build --bindir=/home/xxx/bin
+make
+make install
+
+5、安装Theora
+Theora is a free and open video compression format from theXiph.org Foundation. It can be used to distribute film and video online and ondisc without the licensing and royalty fees or vendor lock-in associated withother formats.
+wget http://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.gz --no-check-certificate
+tar -zxvf libtheora-1.1.1.tar.gz
+cd /usr/local/src/libtheora-1.1.1
+PATH="/home/xxx/bin/:$PATH" ./configure --prefix=/home/xxx/ffmpeg_build/ --bindir=/home/xxx/bin/ CPPFLAGS="-I/home/xxx/ffmpeg_build/include" LDFLAGS="-L/home/xxx/ffmpeg_build/lib" && make clean && make && make install
+
+6、安装x264
+x264 is a free software library for encoding video streamsinto the H.264/MPEG-4 AVC format. It is released under the terms of the GNUGeneral Public License.
+wget ftp://ftp.videolan.org/pub/x264/snapshots/last_x264.tar.bz2
+tar xvjf last_x264.tar.bz2
+cd x264-snapshot-*
+make distclean
+./configure --prefix=/home/xxx/ffmpeg_build/ --bindir=/home/xxx/bin/ --enable-shared && make clean && make && make install
+
+7、安装libfacc
+FAAC is an MPEG-4 and MPEG-2 AAC encoder. Installing thelibfaac libraries enable ffmpeg to encode audio stream using the AAC codec
+The Installation Process
+wget http://downloads.sourceforge.net/faac/faac-1.28.tar.gz
+tar zxvf faac-1.28.tar.gz
+cd faac-1.28
+./configure --prefix=/home/xxx/ffmpeg_build/ --bindir=/home/xxx/bin/ && make clean && make && make install
+
+Common Problems
+In recent Linux distrubutions (Centos 6, Debian 6) thecompilation may fail with the following error
+In file included from mp4common.h:29, from 3gp.cpp:28:mpeg4ip.h:126: error: new declaration ‘char* strcasestr(const char*, const char*)’
+That is because the C function strcasestr declared in thelibfaac sources is already declared in a system-wide library.
+
+To solve it:vim faac-1.28/common/mp4v2/mpeg4ip.h anddelete the following line (around line 126)
+
+//char *strcasestr(const char *haystack, const char *needle);
+编译报错，按上述方法注释掉那行代码
+
+8、安装libfdk-aac
+The Fraunhofer FDK AAC codec library. This is currently the highest-quality AACencoder available with ffmpeg.
+yum install unzip
+cd /usr/local/src
+wget -O fdk-aac.zip https://github.com/mstorsjo/fdk-aac/zipball/master
+unzip fdk-aac.zip
+cd mstorsjo-fdk-aac*
+autoreconf -fiv
+./configure --prefix=/home/xxx/ffmpeg_build/ --bindir=/home/xxx/bin/
+make
+make install
+make distclean
+
+9、安装lame
+LAME is an open source application used to encode audiointo the MP3 file format. The name LAME is a recursive acronym for LAME Ain’tan MP3 Encoder, reflecting LAME’s early history when it was not actually anencoder, but merely a set of patches against the freely available ISOdemonstration source code.
+wget downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
+tar zxvf lame-3.99.5.tar.gz
+cd lame-3.99.5
+make distclean
+./configure --prefix=/home/xxx/ffmpeg_build/ --bindir=/home/xxx/bin/ && make clean && make && make install
+
+10、安装libopus
+Opus is a totally open, royalty-free, highly versatile audio codec. Opus isunmatched for interactive speech and music transmission over the Internet, butis also intended for storage and streaming applications. It is standardized bythe Internet Engineering Task Force (IETF) as RFC 6716 which incorporatedtechnology from Skype’s SILK codec and Xiph.Org’s CELT codec.
+wget http://downloads.xiph.org/releases/opus/opus-1.1.tar.gz
+tar zxvf opus-1.1.tar.gz
+cd opus-1.1
+./configure --prefix=/home/xxx/ffmpeg_build/ --bindir=/home/xxx/bin/ --enable-static --enable-shared
+make
+make install
+ldconfig
+
+11、安装libvpx
+VP8 and VP9 are open video compression formats, aimed atproviding high picture quality at lower bitrate. libvpx provide decoding andencoding capabilities for the VP8 and VP9 formats.
+wget https://github.com/webmproject/libvpx/archive/v1.8.0/libvpx-1.8.0.tar.gz
+tar zxvf libvpx-1.8.0.tar.gz
+cd libvpx-1.8.0
+./configure --prefix=/home/xxx/ffmpeg_build/ --disable-examples --enable-shared && make && make install && ldconfig
+提示找不到yasm的话，export PATH=yasm_path(你编译安装的yasm路径):$PATH
+再configure && make
+
+12、安装libx265
+x265 refers to one of the latest open source video codecused for encoding videos. It is available as free software. The x265 encoderuses the latest x265 codec based on the HEVC High Efficiency Video Coding orH.265 standard. The main objective of H.265/x265 is to improve video quality bydoubling the data compression ratio of the previous standard known asH.264/x264 encoding standard. Even if the actual browsers and mobile devices donot really support it yet, it’s very interesting for our computers, or even tostore videos on our personal clouds/NAS…
+
+下载地址：https://bitbucket.org/multicoreware/x265/downloads/
+
+cd x265_3.0/build/linux
+./make-Makefiles.bash
+BIN_INSTALL_DIR /home/xxx/bin
+CHECKED_BUILD OFF
+CMAKE_BUILD_TYPE Release
+CMAKE_INSTALL_PREFIX /home/xxx/ffmpeg_build
+DETAILED_CU_STATS OFF
+ENABLE_AGGRESSIVE_CHECKS OFF
+ENABLE_ASSEMBLY OFF
+ENABLE_CLI ON
+ENABLE_HDR10_PLUS OFF
+ENABLE_LIBNUMA ON
+ENABLE_LIBVMAF OFF
+ENABLE_PIC ON
+ENABLE_PPA OFF
+ENABLE_SHARED ON
+ENABLE_VTUNE OFF
+FSANITIZE
+HIGH_BIT_DEPTH OFF
+LIBDL /usr/lib64/libdl.so
+LIB_INSTALL_DIR /home/xxx/ffmpeg_build
+NASM_EXECUTABLE /home/xxx/bin/nasm
+NO_ATOMICS OFF
+NUMA_ROOT_DIR NUMA_ROOT_DIR-NOTFOUND
+STATIC_LINK_CRT OFF
+VMAF VMAF-NOTFOUND
+WARNINGS_AS_ERRORS OFF
+#我的cpu是四核32线程，想快点编译根据自己机器情况加，反正加的数字超了最大cpu也是用最大的来编译
+make -j20
+make install
+ldconfig
+
+13、安装ffmpeg，终于装到ffmpeg了
+wget https://www.ffmpeg.org/releases/ffmpeg-snapshot-git.tar.bz2 --no-check-certificate
+tar xjf ffmpeg-snapshot-git.tar.bz2
+cd ffmpeg
+make distclean
+export PATH=/home/xxx/bin:$PATH
+PKG_CONFIG_PATH="/home/xxx/ffmpeg_build/lib/pkgconfig/" ./configure --prefix=/home/xxx/ffmpeg_build/ --disable-static --enable-gpl --enable-version3 --enable-nonfree --enable-shared --enable-libmp3lame --enable-libx264 --enable-libx265 --enable-libvpx --enable-libvorbis --enable-libtheora --enable-libxvid --enable-libfdk_aac --enable-libopus
+make clean && make && make install
+make tools/qt-faststart
+cp tools/qt-faststart /home/xxx/bin/
+ldconfig
+
+参考链接：https://blog.csdn.net/wupengqiangqinli/article/details/50618158
+————————————————
+版权声明：本文为CSDN博主「哈希兔子」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/weixin_42651205/article/details/90448797
