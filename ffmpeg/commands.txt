@@ -1,4 +1,4 @@
-1、视频合适转换
+1、视频格式转换
 	.avi --> .mp4 : ffmpeg -i input.avi output.mp4
 	.mp4 --> .ts  : ffmpeg -i input.mp4 output.ts
 	从视频播放地址下载视频： ffmpeg -i "http://......." output.mp4
