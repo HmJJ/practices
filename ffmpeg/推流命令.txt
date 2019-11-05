@@ -1,0 +1,93 @@
+在已经搭好ffmpeg+nginx+rtmp流服务器的情况下
+
+服务器上nginx配置如下：
+user  root;
+worker_processes  1;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#eriror_log  logs/error.log  info;
+error_log  logs/error.log  debug;
+
+#pid        logs/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+rtmp {
+    server {
+        listen 1935;
+        application video1 {
+            live on;
+        }
+        application video2 {
+            live on;
+        }
+    }
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+    #                  '$status $body_bytes_sent "$http_referer" '
+    #                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    server {
+        listen       80;
+        server_name  localhost;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+
+        #error_page  404              /404.html;
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+    }
+ }
+
+
+ 首先在另一台安装了ffmpeg的机器上将一段视频推到流服务器上：
+ 	ffmpeg -re -i rise.mp4 -f flv rtmp://39.108.64.144:1935/video
+
+ 	还可通过-b:v来设置视频的带宽即清晰度，-b:a来设置音频的质量
+ 	ffmpeg -re -i delogo.mp4 -b:v 2000k -b:a 128k -r 25 -s 640*480 -f flv rtmp://39.108.64.144:1935/video
+ 	
+
+ 然后在任意支持rtmp的播放器或者ffmpeg内置的ffplay播放该流服务器视频地址： rtmp://39.108.64.144:1935/video
+ 	例如ffplay： 命令行输入 ffplay rtmp://39.108.64.144:1935/video 即可观看
+
+ 获取本地摄像头并推流到服务器：
+ 	调用本地摄像头： ffplay -f vfwcap -i 本地摄像头
+	ffmpeg -f vfwcap -i 0 -vcodec libx264 D:/data/video/mycamera.h264
+
+ 	ffmpeg -re -i mycamera.h264 -b:v 2000k -b:a 96k -r 25 -s 640*480 -f flv rtmp://39.108.64.144:1935/video
+
+-----------------------------------
+
+	ffmpeg -f dshow -i video="Integrated Webcam" -q 4 -s 640*480 -aspect 4:3 -r 10 -vcodec flv -ar 22050 -ab 64k -ac 1 -acodec libmp3lame -threads 4 -f flv rtmp://39.108.64.144:1935/video
