@@ -91,7 +91,7 @@ http {
 -----------------------------------
     这种方式是直接把摄像头数据推流到服务器，但是如果机器不太行的话，很容易就buffsize不够了，很容易导致推流的视频卡住。
 
-	ffmpeg -f dshow -i video="Integrated Webcam" -q 4 -s 640*480 -aspect 4:3 -r 10 -vcodec flv -ar 22050 D:/data/video/video.mkv -ab 64k -ac 1 -acodec libmp3lame -threads 4 -f flv rtmp://39.108.64.144:1935/video1
+	ffmpeg -f dshow -i video="Integrated Webcam" -y -q 4 -s 640*480 -aspect 4:3 -r 10 -vcodec flv -ar 22050 D:/data/video/video.mkv -ab 64k -ac 1 -acodec libmp3lame -threads 4 -f flv rtmp://39.108.64.144:1935/video1
 
 -----------------------------------
     通过本地文件先缓存的形式，先把摄像头数据保存到一个mkv文件中，再推流该文件，这种方式会有一定的延迟（10s），如果想降低延迟的话，可以通过减少采集缓存、减少音频采集samples数量等来实现，具体参考：https://blog.csdn.net/zhuweigangzwg/article/details/82223011
@@ -104,3 +104,7 @@ http {
     ffmpeg -f dshow -i video="Integrated Webcam" -q 4 -s 640*480 -aspect 4:3 -r 10 -vcodec flv  -ab 64k -ac 1 -acodec libmp3lame -ar 22050 D:/data/video/video.mkv -y
 
     ffmpeg -re -i D:/data/video/video.mkv -b:v 2000k -b:a 128k -r 25 -s 640*480 -f flv rtmp://39.108.64.144:1935/video
+
+-----------------------------------
+	ip摄像头推流
+	ffmpeg -i rtsp://192.168.1.64:port -y -rtbufsize 100m -f mpeg1video -b:v 500k -r 21 -q:v 10 -s 640x480 -f flv rtmp://39.109.64.144:1935/video1
