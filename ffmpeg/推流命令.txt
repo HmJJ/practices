@@ -107,4 +107,6 @@ http {
 
 -----------------------------------
 	ip摄像头推流
-	ffmpeg -i rtsp://192.168.1.64:port -y -rtbufsize 100m -f mpeg1video -b:v 500k -r 21 -q:v 10 -s 640x480 -f flv rtmp://39.109.64.144:1935/video1
+	ffmpeg -i rtsp://admin:12345@192.168.44.2:8000 -y -rtbufsize 100m -f mpeg1video -b:v 500k -r 21 -q:v 10 -s 640x480 -f flv rtmp://39.109.64.144:1935/video1
+
+	ffmpeg -i rtsp://admin:wOs@1003@192.168.44.2 -vcodec copy -acodec aac -ar 44100 -strict -2 -ac 1 -f flv -s 1280x720 -q 10 -f flv rtmp://192.168.44.1:1935/hls
