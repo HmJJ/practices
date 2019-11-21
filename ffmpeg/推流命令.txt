@@ -1,4 +1,5 @@
 在已经搭好ffmpeg+nginx+rtmp流服务器的情况下
+https://www.jianshu.com/p/747e7f68d08f
 
 服务器上nginx配置如下：
 user  root;

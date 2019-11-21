@@ -1,4 +1,5 @@
 https://www.cnblogs.com/wainiwann/p/3866254.html
+https://www.jianshu.com/p/aa7f9e204a62
 
 1、安装依赖包:
 #yum -y install gcc glibc glibc-devel make nasm pkgconfig lib-devel openssl-devel expat-devel gettext-devel libtool mhash.x86_64 perl-Digest-SHA1.x86_64
