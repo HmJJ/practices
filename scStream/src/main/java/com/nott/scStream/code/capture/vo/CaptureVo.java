@@ -1,17 +1,23 @@
 package com.nott.scStream.code.capture.vo;
 
-import java.util.List;
-
 /**
  * @Author: wangjun
  * @Description:
- * @Date: created in 2019/8/30 16:49
+ * @Date: created in 2019/12/9 16:14
  * @Modified By:
  **/
 public class CaptureVo {
+    protected String key;
+    protected String url;
+    protected String filePath;
 
-    private String url;
-    private List<String> params;
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public String getUrl() {
         return url;
@@ -21,11 +27,11 @@ public class CaptureVo {
         this.url = url;
     }
 
-    public List<String> getParams() {
-        return params;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setParams(List<String> params) {
-        this.params = params;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

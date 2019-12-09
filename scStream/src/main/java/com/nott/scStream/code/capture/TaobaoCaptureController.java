@@ -18,9 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.*;
 
 /**
  * @Author: wangjun
@@ -33,6 +32,8 @@ import java.util.Map;
 public class TaobaoCaptureController {
 
     private static Logger log = LoggerFactory.getLogger(TaobaoCaptureController.class);
+
+    private static List<List<String>> heads = new ArrayList<>();
 
 
     @PostMapping(value = "getInfoXlsx")
@@ -57,23 +58,16 @@ public class TaobaoCaptureController {
 
                     List<Object> row = new ArrayList<>();
                     JSONObject shop = result.getJSONObject(s);
-                    String id = shop.getString("id");row.add(id);
-                    String address = shop.getString("address");row.add(address);
-                    String busroutes = shop.getString("busroutes");row.add(busroutes);
-                    String city = shop.getString("city");row.add(city);
-                    String comments = shop.getString("comments");row.add(comments);
-                    String distance = shop.getString("distance");row.add(distance);
-                    String district = shop.getString("district");row.add(district);
-                    String dsr = shop.getString("dsr");row.add(dsr);
-                    String name = shop.getString("name");row.add(name);
-                    String posx = shop.getString("posx");row.add(posx);
-                    String posy = shop.getString("posy");row.add(posy);
-                    String praiserate = shop.getString("praiserate");row.add(praiserate);
-                    String prov = shop.getString("prov");row.add(prov);
-                    String rateCount = shop.getString("rateCount");row.add(rateCount);
-                    String store_type = shop.getString("store_type");row.add(store_type);
-                    String tel = shop.getString("tel");row.add(tel);
-                    String url = shop.getString("url");row.add(url);
+                    List<String> head = new ArrayList<>();
+                    Set<String> keySet = shop.keySet();
+                    Iterator<String> keyIterator = keySet.iterator();
+                    if (keyIterator.hasNext()) {
+                        String key = keyIterator.next();
+                        head.add(key);
+                        String value = shop.getString(key);
+                        row.add(value);
+                    }
+                    heads.add(head);
                     System.out.println(row.toString());
                     row.add(shop.toJSONString());
                     rows.add(row);
@@ -137,7 +131,7 @@ public class TaobaoCaptureController {
     }
 
     public void createXlsx(List<List<Object>> rows) {
-        String filePath = "D:\\data\\shopbox\\taobao.xlsx";
+        String filePath = "D:\\data\\shopbox\\taobao_"+ LocalDate.now().toString() +".xlsx";
         OutputStream out = null;
         try {
             File file = new File(filePath);
@@ -149,7 +143,7 @@ public class TaobaoCaptureController {
             Sheet sheet = new Sheet(1, 0);
             sheet.setSheetName("店铺信息");
             Table table = new Table(1);
-            table.setHead(createListStringHead());
+            table.setHead(heads);
             writer.write1(rows, sheet, table);
             writer.finish();
 
@@ -165,17 +159,6 @@ public class TaobaoCaptureController {
             }
         }
 
-    }
-
-    private static List<List<String>> createListStringHead() {
-        List<List<String>> heads = new ArrayList<>();
-        String[] titles = {"id", "name", "city", "address", "busroutes", "comments", "distance", "district", "dsr", "posx", "posy", "praiserate", "prov", "rateCount", "store_type", "tel", "url"};
-        for (int i = 0; i < titles.length; i++) {
-            List<String> head = new ArrayList<>();
-            head.add(titles[i]);
-            heads.add(head);
-        }
-        return heads;
     }
 
 }
