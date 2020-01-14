@@ -2,18 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5bdee33f-dcf6-4ddc-843c-3888b35f733f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../gof/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../gof/.mvn/wrapper/MavenWrapperDownloader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../gof/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../gof/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../gof/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../gof/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../gof/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../gof/src/main/java/com/nott/gof/boot/GofApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../gof/src/main/resources/application.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../gof/src/test/java/com/nott/gof/GofApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../设计模式/3_1_1_单例模式.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../设计模式/3_1_1_单例模式.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../sort/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../sort/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../sort/src/main/java/com/nott/sort/service/SortService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../sort/src/main/java/com/nott/sort/service/SortService.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -28,7 +18,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/nott/thread_pt/code/pt_1/test/pt_1_test.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="613">
@@ -36,6 +26,15 @@
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="363">
+              <caret line="62" column="32" lean-forward="true" selection-start-line="62" selection-start-column="32" selection-end-line="62" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -116,80 +115,7 @@
     <panes>
       <pane id="PackagesPane" />
       <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="thread_pt" type="b2602c69:ProjectViewProjectNode" />
-              <item name="thread_pt" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="thread_pt" type="b2602c69:ProjectViewProjectNode" />
-              <item name="thread_pt" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="thread_pt" type="b2602c69:ProjectViewProjectNode" />
-              <item name="thread_pt" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="thread_pt" type="b2602c69:ProjectViewProjectNode" />
-              <item name="thread_pt" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="thread_pt" type="b2602c69:ProjectViewProjectNode" />
-              <item name="thread_pt" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="thread_pt" type="b2602c69:ProjectViewProjectNode" />
-              <item name="thread_pt" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="nott" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="thread_pt" type="b2602c69:ProjectViewProjectNode" />
-              <item name="thread_pt" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="nott" type="462c0819:PsiDirectoryNode" />
-              <item name="thread_pt" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="thread_pt" type="b2602c69:ProjectViewProjectNode" />
-              <item name="thread_pt" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="nott" type="462c0819:PsiDirectoryNode" />
-              <item name="thread_pt" type="462c0819:PsiDirectoryNode" />
-              <item name="boot" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="thread_pt" type="b2602c69:ProjectViewProjectNode" />
-              <item name="thread_pt" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -291,6 +217,7 @@
       <workItem from="1562573428367" duration="117000" />
       <workItem from="1563240895634" duration="161000" />
       <workItem from="1563242193334" duration="16000" />
+      <workItem from="1578989665422" duration="179000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <created>1557891923721</created>
@@ -342,7 +269,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="25566000" />
+    <option name="totallyTimeSpent" value="25745000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -357,7 +284,7 @@
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21083692" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21351932" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -520,13 +447,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="18" column="37" selection-start-line="18" selection-start-column="37" selection-end-line="18" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/application.yaml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="325">
@@ -561,6 +481,13 @@
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="62" column="32" lean-forward="true" selection-start-line="62" selection-start-column="32" selection-end-line="62" selection-end-column="32" />
         </state>
       </provider>
     </entry>

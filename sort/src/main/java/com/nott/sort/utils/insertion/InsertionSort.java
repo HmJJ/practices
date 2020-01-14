@@ -18,7 +18,16 @@ public class InsertionSort extends SortImpl {
     @Override
     public void sort(int[] arr) throws Exception {
         Long startTime = beforeSort("插入排序", arr);
-
+        int current;
+        for (int i=0; i<arr.length-1; i++) {
+            current = arr[i+1];
+            int preIndex = i;
+            while (preIndex>=0 && current<arr[preIndex]) {
+                arr[preIndex+1] = arr[preIndex];
+                preIndex--;
+            }
+            arr[preIndex+1] = current;
+        }
         Long endTime = afterSort("插入排序", arr);
         System.out.println("排序耗时：" + (endTime - startTime));
     }
