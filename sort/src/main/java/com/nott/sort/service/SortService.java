@@ -32,6 +32,9 @@ public class SortService {
         }
         int arr[] = {9, 2, 0, 3, 7, 4, 6, 5};
         Sort sort = sortFactory.getService(type);
+        if (sort == null) {
+            return "请输入正确的排序方式！";
+        }
         try {
             sort.sort(arr);
         } catch (Exception e) {
