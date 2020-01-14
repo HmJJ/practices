@@ -6,6 +6,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 @ComponentScan({"com.nott.rabbitmq_pt"})
 @SpringBootApplication
 public class RabbitmqPtApplication {
@@ -14,6 +18,7 @@ public class RabbitmqPtApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(RabbitmqPtApplication.class, args);
+
 		logger.info("success running boot");
 	}
 
