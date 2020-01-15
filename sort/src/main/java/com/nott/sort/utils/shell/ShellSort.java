@@ -1,6 +1,6 @@
 package com.nott.sort.utils.shell;
 
-import com.nott.sort.common.SortImpl;
+import com.nott.sort.factory.SortImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

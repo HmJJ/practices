@@ -1,7 +1,7 @@
 package com.nott.sort.service;
 
-import com.nott.sort.common.Sort;
-import com.nott.sort.common.SortFactory;
+import com.nott.sort.factory.Sort;
+import com.nott.sort.factory.SortFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

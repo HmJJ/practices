@@ -1,6 +1,6 @@
 package com.nott.sort.utils.merge;
 
-import com.nott.sort.common.SortImpl;
+import com.nott.sort.factory.SortImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;

@@ -1,6 +1,6 @@
 package com.nott.sort.utils.insertion;
 
-import com.nott.sort.common.SortImpl;
+import com.nott.sort.factory.SortImpl;
 import org.springframework.stereotype.Component;
 
 /**

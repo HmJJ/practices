@@ -1,4 +1,4 @@
-package com.nott.sort.common;
+package com.nott.sort.factory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

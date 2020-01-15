@@ -1,4 +1,4 @@
-package com.nott.sort.common;
+package com.nott.sort.factory;
 
 /**
  * @Author: wangjun
