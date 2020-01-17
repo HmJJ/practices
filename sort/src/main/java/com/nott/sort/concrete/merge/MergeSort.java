@@ -1,4 +1,4 @@
-package com.nott.sort.utils.merge;
+package com.nott.sort.concrete.merge;
 
 import com.nott.sort.factory.SortImpl;
 import org.springframework.stereotype.Component;

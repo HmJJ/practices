@@ -1,4 +1,4 @@
-package com.nott.sort.utils.bubble;
+package com.nott.sort.concrete.bubble;
 
 import com.nott.sort.factory.SortImpl;
 import org.slf4j.Logger;

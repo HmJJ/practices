@@ -1,4 +1,4 @@
-package com.nott.sort.utils.selection;
+package com.nott.sort.concrete.selection;
 
 import com.nott.sort.factory.SortImpl;
 import org.slf4j.Logger;

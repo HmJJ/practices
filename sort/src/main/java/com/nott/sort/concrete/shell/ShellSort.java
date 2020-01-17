@@ -1,4 +1,4 @@
-package com.nott.sort.utils.shell;
+package com.nott.sort.concrete.shell;
 
 import com.nott.sort.factory.SortImpl;
 import org.slf4j.Logger;
