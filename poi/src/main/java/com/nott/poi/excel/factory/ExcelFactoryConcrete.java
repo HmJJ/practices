@@ -1,5 +1,7 @@
 package com.nott.poi.excel.factory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Modified By:
  **/
 @Service
-public class ExcelFactoryConcrete {
+public class ExcelFactoryConcrete<T> {
+
+    private static final Logger log = LoggerFactory.getLogger(ExcelFactoryConcrete.class);
 
     private static final String suffix = "SSFConcrete";
 
@@ -28,7 +32,7 @@ public class ExcelFactoryConcrete {
         } else {
             head = "x";
         }
-        ExcelFactory factory = map.get(head + suffix);
+        ExcelFactory<T> factory = map.get(head + suffix);
         return factory;
     }
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * @Author: wangjun
@@ -15,13 +16,19 @@ import java.io.InputStream;
  * @Date: created in 2020/1/15 11:17
  * @Modified By:
  **/
-@Component
-public class HSSFConcrete extends ExcelFactoryImpl {
+@Component(value = "hSSFConcrete")
+public class HSSFConcrete<T> extends ExcelFactoryImpl {
 
     @Override
     public JSONArray readFile(InputStream is) throws IOException {
         Workbook wb = new HSSFWorkbook(is);
         JSONArray array = parse(wb);
         return array;
+    }
+
+    @Override
+    public byte[] write(List params) throws IOException {
+        log.info("进入了实现方法HSSFConcrete...");
+        return new byte[0];
     }
 }
