@@ -21,7 +21,7 @@ public class MergeSort extends SortImpl {
     public void sort(int[] arr) throws Exception {
         String sortName = "归并排序";
         if (arr.length < 2) {
-            throw new IllegalAccessException("归并排序要求数组长度大于2");
+            throw new IllegalArgumentException("归并排序要求数组长度不小于2");
         }
         beforeSort(sortName, arr);
         arr = mergeSort(arr); // TODO 结果不正确
@@ -38,6 +38,12 @@ public class MergeSort extends SortImpl {
         return merge(mergeSort(left), mergeSort(right));
     }
 
+    /**
+     * 将两段排序好的数组结合成一个排序数组
+     * @param left
+     * @param right
+     * @return
+     */
     private int[] merge(int[] left, int[] right) {
         int[] result = new int[left.length + right.length];
         for (int index=0, l=0, r=0; index<result.length; index++) {
