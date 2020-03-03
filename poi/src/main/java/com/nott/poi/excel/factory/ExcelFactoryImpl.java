@@ -190,9 +190,10 @@ public abstract class ExcelFactoryImpl<T> implements ExcelFactory {
                     break;
                 case "class java.util.Date":
                     if (obj == null) {
-                        obj = 0;
+                        cell.setCellValue("");
+                    } else {
+                        cell.setCellValue((Date) obj);
                     }
-                    cell.setCellValue((Date) obj);
                     break;
                 case "class java.util.Calendar":
                     if (obj == null) {
