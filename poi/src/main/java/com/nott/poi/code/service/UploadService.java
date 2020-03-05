@@ -1,6 +1,7 @@
 package com.nott.poi.code.service;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.nott.poi.excel.factory.ExcelFactory;
 import com.nott.poi.excel.factory.ExcelFactoryConcrete;
 import com.nott.poi.code.vo.UploadVo;
@@ -10,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Iterator;
 
 /**
@@ -27,17 +31,19 @@ public class UploadService {
     private ExcelFactoryConcrete excelFactoryConcrete;
 
     public void upload(UploadVo vo) {
-        validate(vo);
-        Long orderId = vo.getOrderId();
-        log.info("orderId: {}", orderId);
+//        validate(vo);
+//        Long orderId = vo.getOrderId();
+//        log.info("orderId: {}", orderId);
         for (MultipartFile file : vo.getFiles()) {
             JSONArray array = parseExcel(file);
             if (array == null)
                 continue;
-            Iterator iterator = array.iterator();
-            if (iterator.hasNext()) {
-                // 业务
-            }
+            /*Iterator iterator = array.iterator();
+            while (iterator.hasNext()) {
+                JSONObject object = (JSONObject) iterator.next();
+                writeFile(object);
+            }*/
+            writeFile(array);
         }
     }
 
@@ -61,6 +67,39 @@ public class UploadService {
             log.error("读取文件失败！");
         }
         return array;
+    }
+
+    private void writeFile(JSONArray array) {
+        FileWriter  fw = null;
+        try {
+            File txt = new File("D:\\data\\shopbox\\updateDealereEmail.txt");
+            fw = new FileWriter(txt, true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        PrintWriter pw = new PrintWriter(fw);
+        Iterator iterator = array.iterator();
+        while (iterator.hasNext()) {
+            JSONObject jsonObject = (JSONObject) iterator.next();
+            String name = jsonObject.getString("系统名称");
+            if (name == null) {
+                return;
+            }
+            String email1 = jsonObject.getString("对账单Email");
+            String email2 = jsonObject.getString("发货单Email");
+            pw.println("set @name = '"+ name +"', @email1 = '"+ email1 +"', @email2 = '"+email2+"';\n" +
+                    "update pty_dealer set email1 = @email1 where name = @name and ISNULL(email1);\n" +
+                    "update pty_dealer set email2 = @email2 where name = @name and ISNULL(email2);\n");
+        }
+
+        pw.flush();
+        try {
+            fw.flush();
+            pw.close();
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

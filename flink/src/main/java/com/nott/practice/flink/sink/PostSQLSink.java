@@ -1,7 +1,6 @@
 package com.nott.practice.flink.sink;
 
 import com.nott.practice.flink.config.BaseConf;
-import org.apache.flink.api.java.tuple.Tuple5;
 import org.apache.flink.api.java.tuple.Tuple9;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.functions.sink.RichSinkFunction;

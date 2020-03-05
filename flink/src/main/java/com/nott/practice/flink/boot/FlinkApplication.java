@@ -11,28 +11,22 @@ import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
 
+import java.util.Properties;
+
 public class FlinkApplication {
 
 	public static void main(String[] args) throws Exception {
-
-		final ParameterTool parameterTool = ParameterTool.fromArgs(args);
-		if (parameterTool.getNumberOfParameters() < 4) {
-			System.out.println("missing parameters!");
-			System.out.println("\nUsage: Kafka --topic <topic> " +
-					"--bootstrap.servers <kafka brokers> " +
-					"---zookeeper.connect <zk quorum> --group.id <some id>");
-		}
-
 		final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-		env.getConfig().disableSysoutLogging();
-		env.getConfig().setRestartStrategy(RestartStrategies.fixedDelayRestart(4, 10000));
 		env.enableCheckpointing(5000);
-		env.getConfig().setGlobalJobParameters(parameterTool);
 
-		DataStream<String> sourceStream = env.addSource(
-				new FlinkKafkaConsumer011<String>(parameterTool.getRequired("topic"),
-						new SimpleStringSchema(), parameterTool.getProperties())
-		);
+		Properties properties = new Properties();
+		properties.setProperty("bootstrap.servers", "localhost:9092");
+		properties.setProperty("zookeeper.connect", "localhost:2181");
+		properties.setProperty("group.id", "test");
+
+		FlinkKafkaConsumer011<String> myConsumer = new FlinkKafkaConsumer011<String>("shopbox", new SimpleStringSchema(), properties);
+
+		DataStream<String> sourceStream = env.addSource(myConsumer);
 		DataStream<Tuple9<String, String, String, String, String, String, String, String, String>> messageStream = sourceStream.map(new InputMap()).filter(new NullFilter());
 
 		messageStream.addSink(new PostSQLSink());
