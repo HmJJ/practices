@@ -56,10 +56,12 @@ public class ExcelController {
     }
 
     @PostMapping(value = "/parseExcel")
-    public void parseExcel(@RequestParam List<MultipartFile> files) {
+    @ResponseBody
+    public String parseExcel(@RequestParam List<MultipartFile> files) {
         UploadVo vo = new UploadVo();
         vo.setFiles(files);
         uploadService.upload(vo);
+        return "all done";
     }
 
 }

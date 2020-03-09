@@ -2,6 +2,7 @@ package com.nott.poi.excel.factory;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import org.apache.commons.lang3.time.DateUtils;
 
 /**
  * @Author: wangjun
@@ -35,18 +38,31 @@ public abstract class ExcelFactoryImpl<T> implements ExcelFactory {
             CellValue c = evaluator.evaluate(cell);
             if (c != null) {
                 switch (c.getCellType()) {
+                    case BOOLEAN:
+                        String bValue = String.valueOf(c.getBooleanValue());
+                        cellContent.add(bValue);
+                        break;
                     case STRING:
                         String value = c.getStringValue();
                         cellContent.add(value);
                         break;
                     case NUMERIC:
-                        double dValue = c.getNumberValue();
+                        Object dValue = null;
+                        if (HSSFDateUtil.isCellDateFormatted(cell)) {// 处理日期格式、时间格式
+                            Date date = HSSFDateUtil.getJavaDate(c.getNumberValue());
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                            dValue = sdf.format(date);
+                        } else {//处理数值格式
+                            dValue = c.getNumberValue();
+                        }
                         cellContent.add(dValue);
                         break;
                     default:
                         Object oValue = c.formatAsString();
                         cellContent.add(oValue);
                 }
+            } else {
+                cellContent.add("");
             }
         }
         return cellContent;
