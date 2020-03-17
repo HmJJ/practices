@@ -45,7 +45,7 @@ public class UploadService {
                 JSONObject object = (JSONObject) iterator.next();
                 writeFile(object);
             }*/
-            writeFile(array, "D:\\data\\shopbox\\updateAccountDetail.txt");
+            writeFile(array, "D:\\data\\shopbox\\updateAccountDetail_20200310.txt");
 //            writeFile(array, "D:\\data\\shopbox\\updateDealerEmail.txt");
         }
     }
@@ -120,21 +120,19 @@ public class UploadService {
         }
         String operateTime = jsonObject.getString("操作时间");
         String remark = jsonObject.getString("备注");
-        BigDecimal oldAmount = new BigDecimal(jsonObject.getString("调整前货款金额"));
         BigDecimal amount = new BigDecimal(jsonObject.getString("调整后货款金额"));
         BigDecimal balance = new BigDecimal(jsonObject.getString("差值"));
+        String opt = jsonObject.getString("操作");
         // 调整前货款为0时，用insert语句，否则用update
-        if (BigDecimal.ZERO.compareTo(oldAmount) == 0) {
-            pw.println("set @name='"+ name +"', @operateTime='"+ operateTime +"', @oldAmount="+oldAmount+", @amount="+amount+", @balance="+balance+", @remark='"+remark+"';\n" +
+        if ("删去".equals(opt)) {
+            pw.println("set @name='"+ name +"', @operateTime='"+ operateTime +"', @amount="+amount+", @balance="+balance+";\n" +
                     "set @partyId=(select party_id from pty_dealer where name = @name);\n" +
-                    "set @tradeUser=(select id from idm_user idm left join pty_staff pty on pty.party_id = idm.party_id where pty.mobile='15121126805');\n" +
-                    "insert into fin_account_detail (`party_id`, `fee_type`, `credit_account`, `credit_amount`, `trade_user_id`, `trade_time`, `remark`) VALUES (@partyId, '300', 'advance', @amount, @tradeUser, @operateTime, @remark);\n" +
+                    "delete from fin_account_detail where party_id = @partyId and trade_time = @operateTime and credit_amount = @amount;\n" +
                     "update fin_account t1, (select MAX(balance)+@balance as 'balance' from fin_account where party_id = @partyId and account_code = 'advance') t2 set t1.balance = t2.balance where t1.party_id = @partyId and t1.account_code = 'advance';\n");
         } else {
-            pw.println("set @name='"+ name +"', @operateTime='"+ operateTime +"', @oldAmount="+oldAmount+", @amount="+amount+", @balance="+balance+", @remark='"+remark+"';\n" +
+            pw.println("set @name='"+ name +"', @operateTime='"+ operateTime +"', @amount="+amount+", @balance="+balance+";\n" +
                     "set @partyId=(select party_id from pty_dealer where name = @name);\n" +
-                    "update fin_account_detail set credit_amount = @amount, remark = @remark where party_id = @partyId and trade_time = @operateTime and credit_amount = @oldAmount;\n" +
-                    "update fin_account t1, (select MAX(balance)+@balance as 'balance' from fin_account where party_id = @partyId and account_code = 'advance') t2, (select credit_amount from fin_account_detail where party_id = @partyId and trade_time = @operateTime and credit_amount = @amount) t3 set t1.balance = t2.balance where t1.party_id = @partyId and t1.account_code = 'advance' and t3.credit_amount = @amount;\n");
+                    "update fin_account t1, (select MAX(balance)+@balance as 'balance' from fin_account where party_id = @partyId and account_code = 'payable') t2 set t1.balance = t2.balance where t1.party_id = @partyId and t1.account_code = 'payable';\n");
         }
     }
 
