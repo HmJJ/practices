@@ -24,7 +24,7 @@ public class MergeSort extends SortImpl {
             throw new IllegalArgumentException("归并排序要求数组长度不小于2");
         }
         beforeSort(sortName, arr);
-        arr = mergeSort(arr); // TODO 结果不正确
+        arr = mergeSort(arr);
         afterSort(sortName, arr);
     }
 
@@ -48,7 +48,7 @@ public class MergeSort extends SortImpl {
         int[] result = new int[left.length + right.length];
         for (int index=0, l=0, r=0; index<result.length; index++) {
             if (l>=left.length) {
-                result[index] = result[r++];
+                result[index] = right[r++];
             } else if (r>=right.length) {
                 result[index] = left[l++];
             } else if (left[l] > right[r]) {
