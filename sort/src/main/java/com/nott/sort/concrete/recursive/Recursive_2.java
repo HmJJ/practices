@@ -1,5 +1,6 @@
 package com.nott.sort.concrete.recursive;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -10,24 +11,26 @@ import java.util.*;
  **/
 public class Recursive_2 {
 
+    /**
+     * 443
+     *      315
+     *              563
+     *                      564
+     *
+     *      314
+     *              565
+     */
     public static void main(String[] args) {
-        List<Long> permissionIds = getPermissionIds();
-        /**
-         * 443
-         *      315
-         *              563
-         *                      564
-         *
-         *      314
-         *              565
-         */
+        Relationship tenant = new Relationship();
+        PermissionVo permissionVo = getPermissionVo(tenant);
     }
 
-    private static List<Long> getPermissionIds(Relationship tenant) {
-        List<Long> groupIds = new ArrayList<>();
-        groupIds.add(563L);groupIds.add(564L);groupIds.add(565L);
+
+    private static PermissionVo getPermissionVo(Relationship tenant) {
+        List<Long> groupIds = new ArrayList<>(); // 人员所在的部门id
+        PermissionVo permissionVo = new PermissionVo(tenant.getPartyIdFrom(), groupIds);
         if (groupIds.contains(tenant.getPartyIdFrom())) {
-            return groupIds;
+            return permissionVo;
         }
         Map<Long, NodeVo> treeNodes = new HashMap<>();
         treeNodes = findAllNode(tenant, 1, treeNodes); // 列出每个部门所在的层级信息
@@ -52,48 +55,167 @@ public class Recursive_2 {
             nodes.put(currentNode.getLevel(), nodeVos);
         }
         if (minLevel == 2) {
-            return groupIds;
+            return permissionVo;
         }
-        List<Long> permissionIds = collectNodeId(treeNodes, nodes, minLevel, deepLevel);
-        permissionIds.addAll(groupIds);
-        Set<Long> ids = new HashSet<>(permissionIds);
-        permissionIds = new ArrayList<>(ids);
-        return permissionIds;
+        permissionVo = getSubIds(deepLevel, nodes, treeNodes);
+        permissionVo.addList(groupIds);
+        return permissionVo;
     }
     private static Map<Long, NodeVo> findAllNode(Relationship parent, int level, Map<Long, NodeVo> treeNodes) {
         NodeVo current = new NodeVo(level, parent.getPartyIdTo(), parent.getPartyIdFrom());
         treeNodes.put(parent.getPartyIdFrom(), current);
         level++;
-        List<Relationship> children = relationshipQueryService.findChildren(parent.getTenantId(), parent.getPartyIdFrom());
+        List<Relationship> children = new ArrayList<>();
         for (Relationship child : children) {
             treeNodes = findAllNode(child, level, treeNodes);
         }
         return treeNodes;
     }
-    private static List<Long> collectNodeId(Map<Long, NodeVo> treeNodes, Map<Integer, List<NodeVo>> nodes, int minLevel, int deepLevel) {
-        List<Long> nodeIds = new ArrayList<>();
-        List<NodeVo> nodeVos = nodes.get(deepLevel);
-        for (NodeVo nodeVo : nodeVos) {
-            nodeIds = getSubIds(treeNodes, nodeVo, minLevel, nodeIds);
-        }
-        List<NodeVo> minNodes = nodes.get(minLevel);
-        if (minNodes.size() > 1) {
-            nodeIds.add(minNodes.get(0).getParent());
-        }
-        log.info("nodeIds: {}", nodeIds);
-        return nodeIds;
-    }
-    private static List<Long> getSubIds(Map<Long, NodeVo> treeNodes, NodeVo currentNode, int minLevel, List<Long> subIds) {
-        int currentLevel = currentNode.getLevel();
-        if (currentNode.getLevel() == 1 || currentLevel < minLevel) {
-            return subIds;
-        }
-        subIds.add(currentNode.getCurrent());
-        NodeVo nodeVo = treeNodes.get(currentNode.getParent());
-        subIds = getSubIds(treeNodes, nodeVo, minLevel, subIds);
-        return subIds;
+    private static PermissionVo getSubIds(int deepLevel, Map<Integer, List<NodeVo>> map, Map<Long, NodeVo> treeNodes) {
+        PermissionVo permissionVo;
+        List<Long> permissionIds = new ArrayList<>();
+        Long root = null;
+        int currentLevel = deepLevel;
+        List<NodeVo> currentLevelNodeVos;
+        List<NodeVo> parentLevelNodeVos = new ArrayList<>();
+        do {
+            currentLevelNodeVos = map.get(currentLevel);
+            currentLevelNodeVos.addAll(parentLevelNodeVos);
+            Set<NodeVo> currentSet = new HashSet<>(currentLevelNodeVos);
+            currentLevelNodeVos = new ArrayList<>(currentSet);
+            parentLevelNodeVos.clear();
+            for (NodeVo nodeVo : currentLevelNodeVos) {
+                root = nodeVo.getCurrent();
+                NodeVo parentNodeVo = treeNodes.get(nodeVo.getParent());
+                permissionIds.add(nodeVo.getCurrent());
+                parentLevelNodeVos.add(parentNodeVo);
+            }
+            currentLevel--;
+            List<NodeVo> parentNodeVos = map.get(currentLevel) == null ? new ArrayList<>() : map.get(currentLevel);
+            parentLevelNodeVos.addAll(parentNodeVos);
+            Set<NodeVo> parentSet = new HashSet<>(parentLevelNodeVos);
+            List<NodeVo> list = new ArrayList<>(parentSet);
+            map.put(currentLevel, list);
+        } while (parentLevelNodeVos.size() > 1);
+        permissionVo = new PermissionVo(root, permissionIds);
+        return permissionVo;
     }
 
+    public static class Relationship {
+        private Long id;
+        /**
+         * 来源partyId -
+         */
+        private Long partyIdFrom;
+        /**
+         * 去向partyTo -
+         */
+        private Long partyIdTo;
+        /**
+         * 来源角色类型编码 -
+         */
+        private String roleTypeFrom;
+        /**
+         * 去向角色类型编码 -
+         */
+        private String roleTypeTo;
+        /**
+         * 关系
+         */
+        private String relationshipType;
+        /**
+         * 开始时间 -
+         */
+        private LocalDateTime startTime;
+        /**
+         * 结束时间 -
+         */
+        private LocalDateTime endTime;
+        /**
+         * 状态 -
+         */
+        private String status;
+
+        public Relationship() {
+        }
+
+        public Relationship(Long partyIdFrom, String relationshipType) {
+            this.partyIdFrom = partyIdFrom;
+            this.relationshipType = relationshipType;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public Long getPartyIdFrom() {
+            return partyIdFrom;
+        }
+
+        public void setPartyIdFrom(Long partyIdFrom) {
+            this.partyIdFrom = partyIdFrom;
+        }
+
+        public Long getPartyIdTo() {
+            return partyIdTo;
+        }
+
+        public void setPartyIdTo(Long partyIdTo) {
+            this.partyIdTo = partyIdTo;
+        }
+
+        public String getRoleTypeFrom() {
+            return roleTypeFrom;
+        }
+
+        public void setRoleTypeFrom(String roleTypeFrom) {
+            this.roleTypeFrom = roleTypeFrom;
+        }
+
+        public String getRoleTypeTo() {
+            return roleTypeTo;
+        }
+
+        public void setRoleTypeTo(String roleTypeTo) {
+            this.roleTypeTo = roleTypeTo;
+        }
+
+        public LocalDateTime getStartTime() {
+            return startTime;
+        }
+
+        public void setStartTime(LocalDateTime startTime) {
+            this.startTime = startTime;
+        }
+
+        public LocalDateTime getEndTime() {
+            return endTime;
+        }
+
+        public void setEndTime(LocalDateTime endTime) {
+            this.endTime = endTime;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getRelationshipType() {
+            return relationshipType;
+        }
+
+        public void setRelationshipType(String relationshipType) {
+            this.relationshipType = relationshipType;
+        }
+    }
     public static class NodeVo {
 
         private int level;
@@ -145,6 +267,42 @@ public class Recursive_2 {
                     ", parent=" + parent +
                     ", current=" + current +
                     '}';
+        }
+    }
+    public static class PermissionVo {
+
+        private Long root;
+        private List<Long> children;
+
+        public PermissionVo() {
+        }
+
+        public PermissionVo(Long root, List<Long> children) {
+            this.root = root;
+            this.children = children;
+        }
+
+        public void addList(List<Long> newList) {
+            if (this.children == null) {
+                this.children = new ArrayList<>();
+            }
+            this.children.addAll(newList);
+        }
+
+        public Long getRoot() {
+            return root;
+        }
+
+        public void setRoot(Long root) {
+            this.root = root;
+        }
+
+        public List<Long> getChildren() {
+            return children;
+        }
+
+        public void setChildren(List<Long> children) {
+            this.children = children;
         }
     }
 }
