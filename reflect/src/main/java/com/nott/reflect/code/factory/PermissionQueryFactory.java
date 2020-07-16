@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.beans.IntrospectionException;
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -29,17 +31,17 @@ public class PermissionQueryFactory<T> {
             Method method = query.getClass().getMethod("getGroupPartyId", null);
             Long groupPartyId = (Long) method.invoke(query, null);
             List<Long> groupIdList = getGroupIdList(groupPartyId, className);
-            Field field = query.getClass().getDeclaredField("groupIdList");
-            field.setAccessible(true);
-            field.set(query, groupIdList);
+            PropertyDescriptor pd = new PropertyDescriptor("groupIdList", query.getClass());
+            Method idListMethod = pd.getWriteMethod();
+            idListMethod.invoke(query, groupIdList);
         } catch (InvocationTargetException e) {
             logger.info(e.getCause().getMessage());
         } catch (NoSuchMethodException e1) {
             logger.info(e1.getCause().getMessage());
-        } catch (NoSuchFieldException e2) {
-            logger.info(e2.getCause().getMessage());
         } catch (IllegalAccessException e3) {
             logger.info(e3.getCause().getMessage());
+        } catch (IntrospectionException e4) {
+            logger.info(e4.getCause().getMessage());
         }
         return query;
     }

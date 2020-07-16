@@ -8,12 +8,11 @@ import java.util.List;
  * @Date: created in 2020/7/16 16:21
  * @Modified By:
  **/
-public class RiskQuery {
+public class RiskQuery extends PagingVo {
 
     protected Long id;
     protected String name;
     protected Long groupPartyId;
-    protected List<Long> groupIdList;
 
     public Long getId() {
         return id;
@@ -39,11 +38,4 @@ public class RiskQuery {
         this.groupPartyId = groupPartyId;
     }
 
-    public List<Long> getGroupIdList() {
-        return groupIdList;
-    }
-
-    public void setGroupIdList(List<Long> groupIdList) {
-        this.groupIdList = groupIdList;
-    }
 }
