@@ -2,6 +2,7 @@ package com.nott.security.code.repository;
 
 import com.nott.security.code.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * @Author: wangjun

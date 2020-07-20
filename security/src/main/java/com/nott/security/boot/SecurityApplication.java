@@ -1,6 +1,5 @@
 package com.nott.security.boot;
 
-import com.nott.security.common.config.DefaultProfileUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
@@ -8,9 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -18,12 +17,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-@ComponentScan({"com.nott.*.*"})
+@EntityScan(basePackages = {"com.nott"})
 @MapperScan(basePackages = {"com.nott"})
 @EnableJpaRepositories(basePackages = {"com.nott"})
 @EnableConfigurationProperties({LiquibaseProperties.class})
 @PropertySource(value = {"classpath:config/properties/redis.properties"}, encoding = "utf-8")
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.nott"})
 public class SecurityApplication implements InitializingBean {
 	private static final Logger log = LoggerFactory.getLogger(SecurityApplication.class);
 	private final Environment env;

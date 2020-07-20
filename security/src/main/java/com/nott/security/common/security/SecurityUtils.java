@@ -145,7 +145,7 @@ public class SecurityUtils {
     public String getTokenByOathCode(String oauthCode) {
         String code = AesEncrypt.decrypt(oauthCode);
         String[] codes = code.split(",");
-        return this.getAccessToken(codes[1], "wOs@1003");
+        return this.getAccessToken(codes[1], "nott123");
     }
 
     public void findMyAccountInfo(String token) {
