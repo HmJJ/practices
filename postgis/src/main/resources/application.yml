@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    driver-class-name: org.postgis.DriverWrapper
+    schema: classpath:config/db/schema-postgis.sql
+    data: classpath:config/db/data-postgis.sql
+    url: jdbc:postgresql_postGIS://localhost:5432/woscloud
+    username: postgres
+    password: root
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+
+server:
+  port: 6060
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true

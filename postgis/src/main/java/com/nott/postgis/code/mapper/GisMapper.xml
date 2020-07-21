@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.nott.postgis.code.mapper.GisMapper">
+
+    <insert id="addGis" parameterType="com.nott.postgis.code.domain.Gis"  useGeneratedKeys="true" keyProperty="id" >
+        <selectKey keyProperty="id" resultType="Long" order="BEFORE">
+            SELECT nextval('map_id_seq'::regclass)
+        </selectKey>
+        INSERT INTO wos_gis (name, business_key, business_type, longitude, latitude, tenant_id, geom)
+        VALUES (#{name}, #{businessKey}, #{businessType}, #{longitude}, #{latitude}, #{tenantId}, ST_GeomFromText(#{geoStr}, 4326))
+    </insert>
+
+    <update id="updateGis" parameterType="com.nott.postgis.code.domain.Gis"  useGeneratedKeys="true" keyProperty="id" >
+        update wos_gis
+        SET
+        name=#{name},
+        business_key=#{businessKey},
+        business_type=#{businessType},
+        longitude=#{longitude},
+        latitude=#{latitude},
+        tenant_id=#{tenantId},
+        geom=ST_GeomFromText(#{geoStr}, 4326)
+        where business_key = #{businessKey} and business_type = #{businessType}
+    </update>
+
+</mapper>
