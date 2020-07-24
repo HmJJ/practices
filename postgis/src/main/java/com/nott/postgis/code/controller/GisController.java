@@ -5,6 +5,7 @@ import com.nott.postgis.code.mapper.GisMapperQueryService;
 import com.nott.postgis.code.service.GisService;
 import com.nott.postgis.code.vo.GisQuery;
 import com.nott.postgis.code.vo.GisRecord;
+import org.hibernate.service.spi.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,10 @@ public class GisController {
     @PostMapping("/searchAround")
     public String searchAround(@RequestBody GisQuery query) {
         try {
-            List<GisRecord> records = mapperQueryService.findWithinList(query);
+            List<GisRecord> records = gisService.searchAround(query);
             return "success: " + records.toString();
+        } catch (ServiceException e2) {
+            return "failed: " + e2.getMessage();
         } catch (Exception e) {
             logger.error(e.getMessage());
             return "failed: " + e.getMessage();
@@ -57,8 +60,10 @@ public class GisController {
     @PostMapping("/searchNearest")
     public String searchNearest(@RequestBody GisQuery query) {
         try {
-            List<GisRecord> records = mapperQueryService.findNearestList(query);
+            List<GisRecord> records = gisService.searchNearest(query);
             return "success: " + records.toString();
+        } catch (ServiceException e2) {
+            return "failed: " + e2.getMessage();
         } catch (Exception e) {
             logger.error(e.getMessage());
             return "failed: " + e.getMessage();
