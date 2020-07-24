@@ -21,18 +21,22 @@ public class GisMapperQueryService {
     private SqlSession sqlSession;
 
     public List<GisRecord> findWithinList(GisQuery query) {
-        String geoStr = "SRID=4326;POINT(" + query.getLongitude().toString() + " " + query.getLatitude().toString() + ")";
-        query.setGeoStr(geoStr);
+        query = beforeSearch(query);
         GisQueryMapper mapper = sqlSession.getMapper(GisQueryMapper.class);
         List<GisRecord> gisList = mapper.findGisWithinList(query);
         return gisList;
     }
 
     public List<GisRecord> findNearestList(GisQuery query) {
-        String geoStr = "SRID=4326;POINT(" + query.getLongitude().toString() + " " + query.getLatitude().toString() + ")";
-        query.setGeoStr(geoStr);
+        query = beforeSearch(query);
         GisQueryMapper mapper = sqlSession.getMapper(GisQueryMapper.class);
         List<GisRecord> gisList = mapper.findNearestList(query);
         return gisList;
+    }
+
+    private GisQuery beforeSearch(GisQuery query) {
+        String geoStr = "SRID=4326;POINT(" + query.getLongitude().toString() + " " + query.getLatitude().toString() + ")";
+        query.setGeoStr(geoStr);
+        return query;
     }
 }
