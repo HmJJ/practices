@@ -15,4 +15,5 @@ public interface GisQueryMapper {
 
     List<GisRecord> findGisWithinList(GisQuery query);
 
+    List<GisRecord> findNearestList(GisQuery query);
 }

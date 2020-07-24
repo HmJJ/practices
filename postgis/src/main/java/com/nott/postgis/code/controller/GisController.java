@@ -54,4 +54,15 @@ public class GisController {
         }
     }
 
+    @PostMapping("/searchNearest")
+    public String searchNearest(@RequestBody GisQuery query) {
+        try {
+            List<GisRecord> records = mapperQueryService.findNearestList(query);
+            return "success: " + records.toString();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return "failed: " + e.getMessage();
+        }
+    }
+
 }

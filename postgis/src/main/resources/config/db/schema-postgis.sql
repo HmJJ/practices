@@ -6,6 +6,7 @@ CREATE TABLE public.wos_gis
 (
 	id serial primary key not null,
 	name VARCHAR(32),
+	location VARCHAR(512),
 	business_key serial,
 	business_type VARCHAR(32),
 	longitude real,

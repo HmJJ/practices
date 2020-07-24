@@ -13,7 +13,18 @@
 	    WHERE
 	        ST_DWithin(ST_Transform(t1.geom, 26986), ST_Transform(#{geoStr}::geometry, 26986), #{distance})
 	        and t1.tenant_id = #{tenantId}
-	    order by distance asc;
+	    order by distance asc
+	    limit 10 offset 0;
+    </select>
+
+    <select id="findNearestList" parameterType="com.nott.postgis.code.vo.GisQuery" resultType="com.nott.postgis.code.vo.GisRecord" statementType="PREPARED">
+        SELECT
+            *,
+            ST_DISTANCE(ST_Transform(#{geoStr}::geometry, 26986), ST_Transform(t1.geom, 26986)) as distance
+	    FROM
+	        wos_gis t1
+		order by geom <![CDATA[<->]]> ST_PointFromText(#{geoStr},4326)
+	    limit 1 offset 0;
     </select>
 
 </mapper>

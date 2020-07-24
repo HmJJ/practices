@@ -28,4 +28,11 @@ public class GisMapperQueryService {
         return gisList;
     }
 
+    public List<GisRecord> findNearestList(GisQuery query) {
+        String geoStr = "SRID=4326;POINT(" + query.getLongitude().toString() + " " + query.getLatitude().toString() + ")";
+        query.setGeoStr(geoStr);
+        GisQueryMapper mapper = sqlSession.getMapper(GisQueryMapper.class);
+        List<GisRecord> gisList = mapper.findNearestList(query);
+        return gisList;
+    }
 }
