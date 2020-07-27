@@ -1,6 +1,7 @@
-package com.nott.scStream.code.capture;
+package com.nott.external.code.capture.controller;
 
-import com.nott.scStream.code.capture.vo.CaptureVo;
+import com.nott.external.code.capture.service.CaptureService;
+import com.nott.external.code.capture.vo.CaptureVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

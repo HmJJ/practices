@@ -1,4 +1,4 @@
-package com.nott.scStream.code.capture;
+package com.nott.external.code.capture.service;
 
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.ExcelReader;
@@ -10,12 +10,12 @@ import com.alibaba.excel.metadata.Table;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.nott.scStream.code.capture.vo.CaptureVo;
+import com.nott.external.code.capture.vo.CaptureVo;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.*;
 import java.net.URL;
@@ -96,11 +96,11 @@ public class CaptureService {
         List<List<Object>> rows = new ArrayList<>();
 
         int currentPage = 1;
-        JSONObject object = get(0, currentPage);
+        JSONObject object = getByPage(0, currentPage);
         int prePageTotal = (Integer) object.get("total");
         int pageTotal = (int) Math.ceil(prePageTotal/10.0);
         for (int j = 1; j <= pageTotal; j++) {
-            JSONObject jsonObject = get(0, j);
+            JSONObject jsonObject = getByPage(0, j);
             if (jsonObject.get("stores") == null) {
                 continue;
             }
@@ -146,8 +146,13 @@ public class CaptureService {
     }
 
     //https://map.taobao.com/item/api/itemStoreList.do?locType=current&_input_charset=utf-8&source=map_itemdetail&pageSize=20&pageNo=1&areaCode=310115&itemId=604699475944&tbToken=eee17f6759e3a
-    public JSONObject get(int firstAddCode, int currentPage) {
+    public JSONObject getByPage(int firstAddCode, int currentPage) {
         String url = getUrl(URL, currentPage);
+        JSONObject result = get(url);
+        return result;
+    }
+
+    public JSONObject get(String url) {
         String result = "";
         BufferedReader reader = null;
 

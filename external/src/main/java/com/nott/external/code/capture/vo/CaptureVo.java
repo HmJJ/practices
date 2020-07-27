@@ -1,4 +1,4 @@
-package com.nott.scStream.code.capture.vo;
+package com.nott.external.code.capture.vo;
 
 /**
  * @Author: wangjun
