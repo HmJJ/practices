@@ -110,7 +110,7 @@ public class Connector {
         Map<String, String> map = SHA.getResult(null, "300000");
         System.out.println(map.toString());
         method.setRequestHeader("token", map.get("token"));
-        method.setRequestHeader("saltDate", map.get("salt"));
+        method.setRequestHeader("saltDate", "300000");
         String result = "";
         try {
             httpClient.executeMethod(method);
