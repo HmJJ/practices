@@ -1,5 +1,6 @@
 package com.nott.external.code.external.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.nott.external.code.external.service.ExternalService;
 import org.slf4j.Logger;
@@ -25,17 +26,19 @@ public class ExternalController {
     private ExternalService externalService;
 
     @GetMapping("/getIssueInfo")
-    public String getIssueInfo() {
+    public JSONObject getIssueInfo() {
         String result = externalService.getIssueInfo();
+        JSONObject issueInfo = JSONObject.parseObject(result);
         logger.info("getIssueInfo: success!");
-        return result;
+        return issueInfo;
     }
 
     @GetMapping("/getRiskAnalysisInfo")
-    public String getRiskAnalysisInfo() {
+    public JSONArray getRiskAnalysisInfo() {
         String result = externalService.getRiskAnalysisInfo();
+        JSONArray analysisInfo = JSONArray.parseArray(result);
         logger.info("getRiskAnalysisInfo: success!");
-        return result;
+        return analysisInfo;
     }
 
 }

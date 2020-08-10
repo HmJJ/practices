@@ -36,7 +36,7 @@ public class SecurityApplication implements InitializingBean {
 
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(new Class[]{SecurityApplication.class});
-		/*BootappApplicationListener bootappApplicationListener = new BootappApplicationListener();
+		/*BootApplicationListener bootappApplicationListener = new BootApplicationListener();
 		bootappApplicationListener.loadSystemProperties();
 		app.addListeners(new ApplicationListener[]{bootappApplicationListener});
 		DefaultProfileUtil.addDefaultProfile(app);*/

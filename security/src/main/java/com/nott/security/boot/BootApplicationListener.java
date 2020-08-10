@@ -30,12 +30,12 @@ import java.util.Properties;
  * @Date: created in 2020/7/3 17:01
  * @Modified By:
  **/
-public class BootappApplicationListener implements EnvironmentPostProcessor, ApplicationListener<ApplicationEvent>, Ordered {
+public class BootApplicationListener implements EnvironmentPostProcessor, ApplicationListener<ApplicationEvent>, Ordered {
 
-    private static final Logger log = LoggerFactory.getLogger(BootappApplicationListener.class);
+    private static final Logger log = LoggerFactory.getLogger(BootApplicationListener.class);
     public static final int DEFAULT_ORDER = -2147483643;
 
-    public BootappApplicationListener() {
+    public BootApplicationListener() {
     }
 
     public void onApplicationEvent(ApplicationEvent event) {
