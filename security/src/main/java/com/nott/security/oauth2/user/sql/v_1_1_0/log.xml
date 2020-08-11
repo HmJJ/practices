@@ -1,0 +1,11 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <include file="com/nott/security/oauth2/user/sql/v_1_1_0/init_login.sql" relativeToChangelogFile="false"/>
+    <include file="com/nott/security/oauth2/user/sql/v_1_1_0/init_login_client.sql" relativeToChangelogFile="false"/>
+    <include file="com/nott/security/oauth2/user/sql/v_1_1_0/init_user.sql" relativeToChangelogFile="false"/>
+
+</databaseChangeLog>
