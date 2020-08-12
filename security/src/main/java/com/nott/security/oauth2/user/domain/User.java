@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * @Author: wangjun
+ * @Author: nott
  * @Description:
  * @Date: created in 2020/7/3 10:12
  * @Modified By:

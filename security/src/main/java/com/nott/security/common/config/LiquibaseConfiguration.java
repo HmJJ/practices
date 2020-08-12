@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 /**
- * @Author: wangjun
+ * @Author: nott
  * @Description:
  * @Date: created in 2020/8/11 18:29
  * @Modified By:

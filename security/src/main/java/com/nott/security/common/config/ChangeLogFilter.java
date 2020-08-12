@@ -3,7 +3,7 @@ package com.nott.security.common.config;
 import liquibase.changelog.IncludeAllFilter;
 
 /**
- * @Author: wangjun
+ * @Author: nott
  * @Description:
  * @Date: created in 2020/8/11 18:30
  * @Modified By:
