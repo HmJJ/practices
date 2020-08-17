@@ -1,4 +1,4 @@
-package com.nott.security.oauth2.user.domain;
+package com.nott.security.user.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

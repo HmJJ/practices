@@ -1,6 +1,6 @@
-package com.nott.security.oauth2.user.repository;
+package com.nott.security.user.repository;
 
-import com.nott.security.oauth2.user.domain.Login;
+import com.nott.security.user.domain.Login;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

@@ -4,6 +4,6 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
 
-    <include file="com/nott/security/oauth2/user/sql/v_1_1_0/log.xml" relativeToChangelogFile="false"/>
+    <include file="com/nott/security/user/sql/v_1_1_0/log.xml" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>

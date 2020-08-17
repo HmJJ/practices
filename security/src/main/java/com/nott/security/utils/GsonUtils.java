@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
  * @Date: created in 2020/8/10 15:55
  * @Modified By:
  **/
-public class GsonUtils {
+public class GsonUtils<T> {
 
     //序列化
     final static JsonSerializer<LocalDateTime> jsonSerializerDateTime = (localDateTime, type, jsonSerializationContext) -> new JsonPrimitive(localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
@@ -35,13 +35,13 @@ public class GsonUtils {
         return gson;
     }
 
-    public static String toJson(Object object, Class clazz) {
+    public String toJson(Object object, Class clazz) {
         String json = gson.toJson(object, clazz.getClass());
         return json;
     }
 
-    public static Object fromJson(String json, Class clazz) {
-        Object object = gson.fromJson(json, (Type) clazz.getClass());
+    public T fromJson(String json, Class clazz) {
+        T object = gson.fromJson(json, (Type) clazz.getClass());
         return object;
     }
 
