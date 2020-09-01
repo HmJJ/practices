@@ -1,15 +1,14 @@
-package com.nott.poi.code.service;
+package com.nott.poi.poiexcel.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.nott.poi.excel.factory.ExcelFactory;
-import com.nott.poi.excel.factory.ExcelFactoryConcrete;
+import com.nott.poi.poiexcel.factory.ExcelFactory;
+import com.nott.poi.poiexcel.factory.ExcelFactoryConcrete;
 import com.nott.poi.code.vo.UploadVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -25,7 +24,7 @@ import java.util.Iterator;
  * @Date: created in 2020/1/15 10:42
  * @Modified By:
  **/
-@Service
+@Service(value = "poiUploadService")
 public class UploadService {
 
     private static final Logger log = LoggerFactory.getLogger(UploadService.class);

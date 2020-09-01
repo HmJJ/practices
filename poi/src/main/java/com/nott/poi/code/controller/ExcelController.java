@@ -1,7 +1,7 @@
 package com.nott.poi.code.controller;
 
-import com.nott.poi.code.service.ProductService;
-import com.nott.poi.code.service.UploadService;
+import com.nott.poi.poiexcel.service.ExportService;
+import com.nott.poi.poiexcel.service.UploadService;
 import com.nott.poi.code.vo.UploadVo;
 import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
@@ -15,10 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -34,14 +32,23 @@ public class ExcelController {
     private static Logger log = LoggerFactory.getLogger(ExcelController.class);
 
     @Autowired
-    private ProductService productService;
+    private ExportService productService;
     @Autowired
     private UploadService uploadService;
 
-    @RequestMapping(value = "/getExcel")
+    @PostMapping(value = "/upload")
+    @ResponseBody
+    public String parseExcel(@RequestParam List<MultipartFile> files) {
+        UploadVo vo = new UploadVo();
+        vo.setFiles(files);
+        uploadService.upload(vo);
+        return "all done";
+    }
+
+    @RequestMapping(value = "/export")
     public void getExcel(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("application/octet-stream");
-        byte[] date = productService.getInfo();
+        byte[] date = productService.export();
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String fileName = dtf.format(now) + "_" + now.getNano() + ".xlsx";
@@ -53,15 +60,6 @@ public class ExcelController {
         } catch (IOException e) {
             log.error(e.getCause().getMessage());
         }
-    }
-
-    @PostMapping(value = "/parseExcel")
-    @ResponseBody
-    public String parseExcel(@RequestParam List<MultipartFile> files) {
-        UploadVo vo = new UploadVo();
-        vo.setFiles(files);
-        uploadService.upload(vo);
-        return "all done";
     }
 
 }
