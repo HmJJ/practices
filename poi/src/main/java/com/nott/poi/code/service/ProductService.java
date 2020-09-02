@@ -6,6 +6,7 @@
  */
 package com.nott.poi.code.service;
 
+import com.nott.poi.eaxyexcel.service.EasyExcelService;
 import com.nott.poi.poiexcel.service.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,7 +20,6 @@ public class ProductService {
     private UploadService poiUploadService;
 
     @Autowired
-    @Qualifier("easyUploadService")
-    private com.nott.poi.eaxyexcel.service.UploadService easyUploadService;
+    private EasyExcelService easyEasyExcelService;
 
 }

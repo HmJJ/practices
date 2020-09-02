@@ -11,13 +11,16 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.fastjson.JSON;
 import com.nott.poi.code.service.ProductService;
 import com.nott.poi.code.vo.ProductForm;
+import com.nott.poi.eaxyexcel.vo.TemplateVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ProductExcelListener extends AnalysisEventListener<ProductService> {
+public class ProductExcelListener extends AnalysisEventListener<ProductForm> {
 
     public static final Logger log = LoggerFactory.getLogger(ProductExcelListener.class);
 
@@ -40,11 +43,6 @@ public class ProductExcelListener extends AnalysisEventListener<ProductService> 
             saveData();
             list.clear();
         }
-    }
-
-    @Override
-    public void invoke(ProductService productService, AnalysisContext analysisContext) {
-
     }
 
     @Override

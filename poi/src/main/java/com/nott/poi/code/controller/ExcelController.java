@@ -1,5 +1,6 @@
 package com.nott.poi.code.controller;
 
+import com.nott.poi.eaxyexcel.service.EasyExcelService;
 import com.nott.poi.poiexcel.service.ExportService;
 import com.nott.poi.poiexcel.service.UploadService;
 import com.nott.poi.code.vo.UploadVo;
@@ -7,6 +8,7 @@ import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,6 +37,8 @@ public class ExcelController {
     private ExportService productService;
     @Autowired
     private UploadService uploadService;
+    @Autowired
+    private EasyExcelService easyEasyExcelService;
 
     @PostMapping(value = "/upload")
     @ResponseBody
@@ -42,6 +46,15 @@ public class ExcelController {
         UploadVo vo = new UploadVo();
         vo.setFiles(files);
         uploadService.upload(vo);
+        return "all done";
+    }
+
+    @PostMapping(value = "/easyExcelUpload")
+    @ResponseBody
+    public String easyExcelUpload(@RequestParam List<MultipartFile> files) {
+        UploadVo vo = new UploadVo();
+        vo.setFiles(files);
+        easyEasyExcelService.uploadFormProduct(vo);
         return "all done";
     }
 
