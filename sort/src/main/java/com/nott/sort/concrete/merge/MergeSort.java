@@ -19,13 +19,13 @@ import java.util.Arrays;
 public class MergeSort extends SortImpl {
     @Override
     public void sort(int[] arr) throws Exception {
-        String sortName = "归并排序";
+//        String sortName = "归并排序";
         if (arr.length < 2) {
             throw new IllegalArgumentException("归并排序要求数组长度不小于2");
         }
-        beforeSort(sortName, arr);
+//        beforeSort(sortName, arr);
         arr = mergeSort(arr);
-        afterSort(sortName, arr);
+//        afterSort(sortName, arr);
     }
 
     private int[] mergeSort(int[] arr) {
